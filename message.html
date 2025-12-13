@@ -23,7 +23,46 @@
       max-width: 360px;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      <div class="book">
+  <img id="bookPhoto" src="images/IMG_3138.jpeg">
+  <p id="photoCount">1 / 14</p>
+  <div class="controls">
+    <button onclick="prevPhoto()">← Back</button>
+    <button onclick="nextPhoto()">Next →</button>
+  </div>
+</div>
     }
+    
+    .book {
+  margin-top: 22px;
+}
+
+.book img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 18px;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
+  transition: transform 0.35s ease;
+}
+
+.book img:active {
+  transform: scale(0.97);
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.controls button {
+  padding: 10px 18px;
+  border-radius: 22px;
+  border: none;
+  background: #6c63ff;
+  color: white;
+  font-size: 14px;
+}
     
 .confetti {
   position: fixed;
@@ -94,22 +133,7 @@
     <p>
       Happy Birthday 💙
     </p>
-    <div class="gallery">
-  <img src="images/IMG_3138.jpeg">
-  <img src="images/9455.jpeg">
-  <img src="images/8946.jpeg">
-  <img src="images/27029.jpeg">
-  <img src="images/16229.jpeg">
-  <img src="images/16125.jpeg">
-   <img src="images/1611.jpeg">
-  <img src="images/14849.jpeg">
-  <img src="images/12658.jpeg">
-  <img src="images/1000106712.jpeg">
-  <img src="images/1000106709.jpeg">
-  <img src="images/1000046709.jpeg">
-  <img src="images/1000039572.jpeg">
-  <img src="images/1000024923.jpeg
-    
+  
     <audio id="confettiSound">
   <source src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" type="audio/mpeg">
 </audio>
@@ -137,6 +161,43 @@
   }
 
   window.onload = launchConfetti;
+</script>
+<script>
+  const photos = [
+    "images/IMG_3138.jpeg",
+    "images/9455.jpeg",
+    "images/8946.jpeg",
+    "images/27029.jpeg",
+    "images/16229.jpeg",
+    "images/16125.jpeg",
+    "images/1611.jpeg",
+    "images/14849.jpeg",
+    "images/12658.jpeg",
+    "images/1000106712.jpeg",
+    "images/1000106709.jpeg",
+    "images/1000046709.jpeg",
+    "images/1000039572.jpeg",
+    "images/1000024923.jpeg"
+  ];
+
+  let index = 0;
+
+  function nextPhoto() {
+    index = (index + 1) % photos.length;
+    updatePhoto();
+  }
+
+  function prevPhoto() {
+    index = (index - 1 + photos.length) % photos.length;
+    updatePhoto();
+  }
+
+  function updatePhoto() {
+    const img = document.getElementById("bookPhoto");
+    img.src = photos[index];
+    document.getElementById("photoCount").innerText =
+      (index + 1) + " / " + photos.length;
+  }
 </script>
 </body>
 </html>
