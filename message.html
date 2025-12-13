@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>For A10 💙</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       margin: 0;
@@ -12,299 +11,289 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #e8f0ff, #fff0f8);
+      background: black; /* full black background */
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      color: white;
     }
 
     .box {
-      .book {
-  margin-top: 22px;
-}
-
-.book img {
-  width: 100%;
-  max-width: 280px;
-  border-radius: 18px;
-  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  transform-origin: left;
-  backface-visibility: hidden;
-  display: block;
-}
-
-.book img:active {
-  transform: scale(0.97);
-}
-
-.book {
-  perspective: 1000px; /* Gives 3D depth */
-  margin-top: 22px;
-}
-
-.book img {
-  width: 100%;
-  max-width: 280px;
-  border-radius: 18px;
-  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
-  transition: transform 0.8s ease-in-out;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  display: block;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-}
-
-.controls button {
-  padding: 10px 18px;
-  border-radius: 22px;
-  border: none;
-  background: #6c63ff;
-  color: white;
-  font-size: 14px;
-}
-      background: white;
+      background: #111;
       padding: 35px;
       border-radius: 22px;
-      max-width: 360px;
+      max-width: 380px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-  
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-    
-    .book {
-  margin-top: 22px;
-}
 
-.book img {
-  width: 100%;
-  max-width: 280px;
-  border-radius: 18px;
-  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
-  transition: transform 0.35s ease;
-}
-
-.book img:active {
-  transform: scale(0.97);
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-}
-
-.controls button {
-  padding: 10px 18px;
-  border-radius: 22px;
-  border: none;
-  background: #6c63ff;
-  color: white;
-  font-size: 14px;
-}
-    
-.confetti {
-  position: fixed;
-  width: 12px;
-  height: 18px;
-  background-color: red;
-  top: -20px;
-  opacity: 0.9;
-  animation: fall linear forwards;
-  z-index: 999;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-.gallery {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  justify-content: center;
-}
-
-.gallery img {
-  width: 90px;
-  height: 90px;
-  border-radius: 14px;
-  object-fit: cover;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
-.page {
-  width: 100%;
-  max-width: 280px;
-  margin: auto;
-  border-radius: 18px;
-  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
-  position: relative;
-  overflow: hidden;
-  transition: background 0.5s ease;
-}
-
-/* Example: make second page black */
-.page.black {
-  background-color: black;
-  color: white;
-}
-
-/* Stickers / interactive elements */
-.sticker {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  animation: float 4s infinite alternate;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-20px); }
-}
-
-@keyframes floatUp {
-  0% {
-    transform: translateY(100vh) scale(0.8);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-10vh) scale(1.2);
-    opacity: 0;
-  }
-}
     h1 {
       margin-top: 0;
     }
 
     p {
-      color: #555;
       line-height: 1.5;
     }
+
+    .book {
+      margin-top: 22px;
+      perspective: 1000px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 280px;
+      margin: auto;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.5s ease;
+      background: #222;
+    }
+
+    .page.black {
+      background: black;
+      color: white;
+    }
+
+    .bookPhoto {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+      transform-origin: left;
+      backface-visibility: hidden;
+    }
+
+    .bookPhoto:active {
+      transform: scale(0.97);
+    }
+
+    .photoCount {
+      text-align: center;
+      margin: 8px 0;
+      font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+    }
+
+    .controls button {
+      padding: 10px 18px;
+      border-radius: 22px;
+      border: none;
+      background: #6c63ff;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Stickers / interactive elements */
+    .sticker {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      animation: float 4s infinite alternate;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-20px); }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 12px;
+      height: 18px;
+      background-color: red;
+      top: -20px;
+      opacity: 0.9;
+      animation: fall linear forwards;
+      z-index: 999;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
   </style>
 </head>
-
 <body>
+
   <div class="box">
-    <h1>Hi, i hope you're surprised😛</h1>
+    <h1>Hi, I hope you're surprised 😛</h1>
     <p>
-    You’re officially 24 now. 
-    I made this website for you because you will always be one of the people i look up to and this is my way to impress you.
-    You're literally so cool, i can't believe im admitting it but i wish i knew half the things you do.
-    Anyways enough with the glazing.
+      You’re officially 24 now. I made this website for you because you will always be one of the people I look up to and this is my way to impress you.
+      You're literally so cool, I can't believe I'm admitting it but I wish I knew half the things you do.
     </p>
     <p>
       Happy Birthday 💙
     </p>
+
     <div class="book">
-  <div class="page" id="page1">
-    <img src="images/IMG_3138.jpeg" class="bookPhoto">
-    <p class="photoCount">1 / 14</p>
+      <div class="page" id="page">
+        <img src="images/IMG_3138.jpeg" class="bookPhoto">
+        <p class="photoCount">1 / 14</p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="playClickSound(); prevPhoto()">← Back</button>
+      <button onclick="playClickSound(); nextPhoto()">Next →</button>
+    </div>
   </div>
-  <div class="page" id="page2">
-    <img src="images/9455.jpeg" class="bookPhoto">
-    <p class="photoCount">2 / 14</p>
-  </div>
-</div>
 
-<div class="controls">
-  <button onclick="playClickSound(); prevPhoto()">← Back</button>
-  <button onclick="playClickSound(); nextPhoto()">Next →</button>
-</div>
-  
-    <audio id="confettiSound">
-  <source src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" type="audio/mpeg">
-</audio>
+  <!-- Confetti sound -->
+  <audio id="confettiSound">
+    <source src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" type="audio/mpeg">
+  </audio>
 
-<script>
-  const colors = ["#ff5f6d", "#ffc371", "#7ed6df", "#badc58", "#e056fd"];
+  <script>
+    const photos = [
+      "images/IMG_3138.jpeg",
+      "images/9455.jpeg",
+      "images/8946.jpeg",
+      "images/27029.jpeg",
+      "images/16229.jpeg",
+      "images/16125.jpeg",
+      "images/1611.jpeg",
+      "images/14849.jpeg",
+      "images/12658.jpeg",
+      "images/1000106712.jpeg",
+      "images/1000106709.jpeg",
+      "images/1000046709.jpeg",
+      "images/1000039572.jpeg",
+      "images/1000024923.jpeg"
+    ];
 
-  function launchConfetti() {
-    document.getElementById("confettiSound").play();
+    const pageSounds = [
+      "sounds/sound1.mp3",
+      "sounds/sound2.mp3",
+      "sounds/sound3.mp3",
+      "sounds/sound4.mp3",
+      "sounds/sound5.mp3",
+      "sounds/sound6.mp3",
+      "sounds/sound7.mp3",
+      "sounds/sound8.mp3",
+      "sounds/sound9.mp3",
+      "sounds/sound10.mp3",
+      "sounds/sound11.mp3",
+      "sounds/sound12.mp3",
+      "sounds/sound13.mp3",
+      "sounds/sound14.mp3"
+    ];
 
-    for (let i = 0; i < 40; i++) {
-      const confetti = document.createElement("div");
-      confetti.classList.add("confetti");
+    let index = 0;
+    let currentAudio = null;
 
-      confetti.style.left = Math.random() * 100 + "vw";
-      confetti.style.backgroundColor =
-        colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.animationDuration =
-        2 + Math.random() * 3 + "s";
+    function addStickers(page) {
+      // Remove old stickers
+      const oldStickers = page.querySelectorAll('.sticker');
+      oldStickers.forEach(s => s.remove());
 
-      document.body.appendChild(confetti);
+      // Example stickers per page
+      if(index === 0) {
+        const star = document.createElement('img');
+        star.src = 'stickers/star.png';
+        star.classList.add('sticker');
+        star.style.left = '30px';
+        star.style.top = '20px';
+        page.appendChild(star);
+      }
 
-      setTimeout(() => confetti.remove(), 5000);
+      if(index === 3) {
+        const heart = document.createElement('img');
+        heart.src = 'stickers/heart.png';
+        heart.classList.add('sticker');
+        heart.style.left = '180px';
+        heart.style.top = '40px';
+        page.appendChild(heart);
+      }
+
+      if(index === 5) {
+        const confetti = document.createElement('img');
+        confetti.src = 'stickers/confetti.png';
+        confetti.classList.add('sticker');
+        confetti.style.left = '100px';
+        confetti.style.top = '50px';
+        page.appendChild(confetti);
+      }
     }
-  }
 
-  window.onload = launchConfetti;
-</script>
-<script>
-   const photos = [
-  "images/IMG_3138.jpeg",
-  "images/9455.jpeg",
-  "images/8946.jpeg",
-  "images/27029.jpeg",
-  "images/16229.jpeg",
-  "images/16125.jpeg",
-  "images/1611.jpeg",
-  "images/14849.jpeg",
-  "images/12658.jpeg",
-  "images/1000106712.jpeg",
-  "images/1000106709.jpeg",
-  "images/1000046709.jpeg",
-  "images/1000039572.jpeg",
-  "images/1000024923.jpeg"
-];
+    function playSoundForPage(idx) {
+      if(currentAudio) currentAudio.pause();
+      currentAudio = new Audio(pageSounds[idx]);
+      currentAudio.play();
+    }
 
-let index = 0;
+    function playClickSound() {
+      const clickAudio = new Audio("sounds/click.mp3");
+      clickAudio.play();
+    }
 
-function updatePage() {
-  const page = document.querySelector('.page');
-  const photo = page.querySelector('.bookPhoto');
-  const count = page.querySelector('.photoCount');
+    function launchConfetti() {
+      document.getElementById("confettiSound").play();
+      const colors = ["#ff5f6d", "#ffc371", "#7ed6df", "#badc58", "#e056fd"];
+      for(let i=0;i<40;i++){
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random()*100 + "vw";
+        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.animationDuration = (2 + Math.random()*3) + "s";
+        document.body.appendChild(confetti);
+        setTimeout(()=>confetti.remove(),5000);
+      }
+    }
 
-  photo.src = photos[index];
-  count.innerText = `${index + 1} / ${photos.length}`;
+    function updatePage() {
+      const page = document.getElementById('page');
+      const photo = page.querySelector('.bookPhoto');
+      const count = page.querySelector('.photoCount');
 
-  // Example: make second page black
-  if (index === 1) {
-    page.classList.add('black');
-  } else {
-    page.classList.remove('black');
-  }
+      // Page flip animation
+      photo.style.transform = "rotateY(90deg)";
+      photo.style.opacity = "0";
 
-  // Add stickers dynamically
-  addStickers(page);
-  
-  // Play sound for this page
-  playSoundForPage(index);
-}
+      setTimeout(()=>{
+        photo.src = photos[index];
+        count.innerText = `${index+1} / ${photos.length}`;
 
-function nextPhoto() {
-  index = (index + 1) % photos.length;
-  updatePage();
-}
+        if(index === 1) page.classList.add('black');
+        else page.classList.remove('black');
 
-function prevPhoto() {
-  index = (index - 1 + photos.length) % photos.length;
-  updatePage();
-}
-function playClickSound() {
-  const clickAudio = new Audio("sounds/click.mp3");
-  clickAudio.play();
-}
-}
-</script>
+        photo.style.transform = "rotateY(0deg)";
+        photo.style.opacity = "1";
+
+        addStickers(page);
+        playSoundForPage(index);
+
+        // Launch confetti on last page as an example
+        if(index === photos.length-1) launchConfetti();
+
+      }, 300);
+    }
+
+    function nextPhoto() {
+      index = (index + 1) % photos.length;
+      playClickSound();
+      updatePage();
+    }
+
+    function prevPhoto() {
+      index = (index - 1 + photos.length) % photos.length;
+      playClickSound();
+      updatePage();
+    }
+
+    // Initialize first page
+    updatePage();
+  </script>
+
 </body>
 </html>
