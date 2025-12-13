@@ -139,6 +139,36 @@
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
+.page {
+  width: 100%;
+  max-width: 280px;
+  margin: auto;
+  border-radius: 18px;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.5s ease;
+}
+
+/* Example: make second page black */
+.page.black {
+  background-color: black;
+  color: white;
+}
+
+/* Stickers / interactive elements */
+.sticker {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: float 4s infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-20px); }
+}
+
 @keyframes floatUp {
   0% {
     transform: translateY(100vh) scale(0.8);
@@ -175,13 +205,20 @@
     <p>
       Happy Birthday 💙
     </p>
-      <div class="book">
-  <img id="bookPhoto" src="images/IMG_3138.jpeg">
-  <p id="photoCount">1 / 14</p>
-  <div class="controls">
-    <button onclick="prevPhoto()">← Back</button>
-    <button onclick="nextPhoto()">Next →</button>
+    <div class="book">
+  <div class="page" id="page1">
+    <img src="images/IMG_3138.jpeg" class="bookPhoto">
+    <p class="photoCount">1 / 14</p>
   </div>
+  <div class="page" id="page2">
+    <img src="images/9455.jpeg" class="bookPhoto">
+    <p class="photoCount">2 / 14</p>
+  </div>
+</div>
+
+<div class="controls">
+  <button onclick="playClickSound(); prevPhoto()">← Back</button>
+  <button onclick="playClickSound(); nextPhoto()">Next →</button>
 </div>
   
     <audio id="confettiSound">
@@ -213,48 +250,60 @@
   window.onload = launchConfetti;
 </script>
 <script>
-  const photos = [
-    "images/IMG_3138.jpeg",
-    "images/9455.jpeg",
-    "images/8946.jpeg",
-    "images/27029.jpeg",
-    "images/16229.jpeg",
-    "images/16125.jpeg",
-    "images/1611.jpeg",
-    "images/14849.jpeg",
-    "images/12658.jpeg",
-    "images/1000106712.jpeg",
-    "images/1000106709.jpeg",
-    "images/1000046709.jpeg",
-    "images/1000039572.jpeg",
-    "images/1000024923.jpeg"
-  ];
+   const photos = [
+  "images/IMG_3138.jpeg",
+  "images/9455.jpeg",
+  "images/8946.jpeg",
+  "images/27029.jpeg",
+  "images/16229.jpeg",
+  "images/16125.jpeg",
+  "images/1611.jpeg",
+  "images/14849.jpeg",
+  "images/12658.jpeg",
+  "images/1000106712.jpeg",
+  "images/1000106709.jpeg",
+  "images/1000046709.jpeg",
+  "images/1000039572.jpeg",
+  "images/1000024923.jpeg"
+];
 
-  let index = 0;
+let index = 0;
 
-  function nextPhoto() {
-    index = (index + 1) % photos.length;
-    updatePhoto();
+function updatePage() {
+  const page = document.querySelector('.page');
+  const photo = page.querySelector('.bookPhoto');
+  const count = page.querySelector('.photoCount');
+
+  photo.src = photos[index];
+  count.innerText = `${index + 1} / ${photos.length}`;
+
+  // Example: make second page black
+  if (index === 1) {
+    page.classList.add('black');
+  } else {
+    page.classList.remove('black');
   }
 
-  function prevPhoto() {
-    index = (index - 1 + photos.length) % photos.length;
-    updatePhoto();
-  }
+  // Add stickers dynamically
+  addStickers(page);
+  
+  // Play sound for this page
+  playSoundForPage(index);
+}
 
-  function updatePhoto() {
-  const img = document.getElementById("bookPhoto");
-  
-  // Flip out
-  img.style.transform = "rotateY(90deg)";
-  
-  setTimeout(() => {
-    // Change image while flipped
-    img.src = photos[index];
-    
-    // Flip back in
-    img.style.transform = "rotateY(0deg)";
-  }, 400); // Half of the 0.8s transition
+function nextPhoto() {
+  index = (index + 1) % photos.length;
+  updatePage();
+}
+
+function prevPhoto() {
+  index = (index - 1 + photos.length) % photos.length;
+  updatePage();
+}
+function playClickSound() {
+  const clickAudio = new Audio("sounds/click.mp3");
+  clickAudio.play();
+}
 }
 </script>
 </body>
