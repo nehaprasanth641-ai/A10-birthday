@@ -26,7 +26,10 @@
   max-width: 280px;
   border-radius: 18px;
   box-shadow: 0 14px 35px rgba(0,0,0,0.18);
-  transition: transform 0.35s ease;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  transform-origin: left;
+  backface-visibility: hidden;
+  display: block;
 }
 
 .book img:active {
@@ -224,11 +227,18 @@
   }
 
   function updatePhoto() {
-    const img = document.getElementById("bookPhoto");
+  const img = document.getElementById("bookPhoto");
+  
+  // Add page-turn animation
+  img.style.transform = "rotateY(90deg)";
+  img.style.opacity = "0";
+
+  setTimeout(() => {
     img.src = photos[index];
-    document.getElementById("photoCount").innerText =
-      (index + 1) + " / " + photos.length;
-  }
+    img.style.transform = "rotateY(0deg)";
+    img.style.opacity = "1";
+  }, 300); // half of transition duration
+}
 </script>
 </body>
 </html>
