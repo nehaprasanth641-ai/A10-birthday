@@ -36,6 +36,22 @@
   transform: scale(0.97);
 }
 
+.book {
+  perspective: 1000px; /* Gives 3D depth */
+  margin-top: 22px;
+}
+
+.book img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 18px;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.18);
+  transition: transform 0.8s ease-in-out;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  display: block;
+}
+
 .controls {
   display: flex;
   justify-content: space-between;
@@ -229,15 +245,16 @@
   function updatePhoto() {
   const img = document.getElementById("bookPhoto");
   
-  // Add page-turn animation
+  // Flip out
   img.style.transform = "rotateY(90deg)";
-  img.style.opacity = "0";
-
+  
   setTimeout(() => {
+    // Change image while flipped
     img.src = photos[index];
+    
+    // Flip back in
     img.style.transform = "rotateY(0deg)";
-    img.style.opacity = "1";
-  }, 300); // half of transition duration
+  }, 400); // Half of the 0.8s transition
 }
 </script>
 </body>
