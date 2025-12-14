@@ -91,10 +91,11 @@ body {
   justify-content: center;
   font-size: 32px;
   color: transparent;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
+  user-select: none;
 }
 
-.card.flipped {
+.card.show {
   background: #6c63ff;
   color: white;
 }
@@ -103,7 +104,6 @@ body {
   background: #44bd32;
   color: white;
 }
-
 /* CONFETTI */
 .confetti {
   position: fixed;
@@ -231,44 +231,64 @@ function launchConfetti() {
 function setupMemoryGame() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
+
+  const symbols = ["⭐","🌙","💙","✨","🍀","🌸"];
+  const cardsData = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+
   let first = null;
   let lock = false;
   let matches = 0;
 
-  const symbols = ["⭐","🌙","💙","✨","🍀","🌸"];
-  const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
-
-  cards.forEach(sym => {
+  const cards = cardsData.map(symbol => {
     const card = document.createElement("div");
     card.className = "card";
-    card.textContent = sym;
+    card.textContent = symbol;
+    grid.appendChild(card);
+    return card;
+  });
 
+  /* 🔹 SHOW ALL SYMBOLS INITIALLY */
+  cards.forEach(card => card.classList.add("show"));
+
+  /* 🔹 HIDE THEM AFTER 1.5s */
+  setTimeout(() => {
+    cards.forEach(card => card.classList.remove("show"));
+  }, 1500);
+
+  /* 🔹 CLICK LOGIC */
+  cards.forEach(card => {
     card.onclick = () => {
-      if (lock || card.classList.contains("flipped")) return;
-      card.classList.add("flipped");
+      if (lock || card.classList.contains("show") || card.classList.contains("matched")) return;
+
+      card.classList.add("show");
 
       if (!first) {
         first = card;
       } else {
         lock = true;
+
         if (first.textContent === card.textContent) {
           first.classList.add("matched");
           card.classList.add("matched");
           matches++;
-          lock = false;
           first = null;
-          if (matches === symbols.length) launchConfetti();
+          lock = false;
+
+          if (matches === symbols.length) {
+            launchConfetti();
+          }
         } else {
           setTimeout(() => {
-            first.classList.remove("flipped");
-            card.classList.remove("flipped");
+            first.classList.remove("show");
+            card.classList.remove("show");
             first = null;
             lock = false;
           }, 700);
         }
       }
     };
-
+  });
+}
     grid.appendChild(card);
   });
 }
