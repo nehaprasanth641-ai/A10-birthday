@@ -118,14 +118,13 @@ body {
   opacity: 0;
 }
 
-/* Emoji inside card */
-.card .emoji {
-  opacity: 0;
-  transition: opacity 0.15s ease;
+.card .emoji.hidden-emoji {
+  visibility: hidden; /* completely invisible & not interactable */
 }
 
 .card.show .emoji,
 .card.matched .emoji {
+  visibility: visible;
   opacity: 1;
 }
 
@@ -170,8 +169,9 @@ body {
       <img class="bookPhoto" id="photo" onclick="startGame()">
       <p class="photoCount" id="count"></p>
 <div class="card">
-  <span class="emoji">🐱</span>
+  <span class="emoji hidden-emoji">🐱</span>
 </div>
+
       <div id="memoryGame">
         <p><b>A tiny memory game for you 🧠</b></p>
         <div class="grid" id="grid"></div>
@@ -287,6 +287,12 @@ function setupMemoryGame() {
   setTimeout(() => cards.forEach(c => c.classList.remove("show")), 700);
 
   cards.forEach(card => {
+    // Example: reveal emoji when clicked
+card.addEventListener("click", () => {
+  const emoji = card.dataset.emoji; // store emoji in data-attribute
+  card.innerHTML = `<span class="emoji">${emoji}</span>`;
+  card.classList.add("show");
+});
     card.onclick = () => {
       if (lock || card.classList.contains("matched") || card.classList.contains("show")) return;
 
