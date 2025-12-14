@@ -118,6 +118,16 @@ body {
   opacity: 0;
 }
 
+.card.show::before,
+.card.matched::before {
+  opacity: 0;
+}
+
+.card .emoji {
+  font-size: 32px;
+  opacity: 1;
+}
+
 .card .emoji.hidden-emoji {
   visibility: hidden; /* completely invisible & not interactable */
 }
@@ -275,36 +285,30 @@ function setupMemoryGame() {
   let lock = false;
   let matches = 0;
 
+  // Create cards
   const cards = cardsData.map(symbol => {
     const card = document.createElement("div");
     card.className = "card";
-    card.textContent = symbol;
+    card.dataset.emoji = symbol; // store emoji in data-attribute
     grid.appendChild(card);
     return card;
   });
 
-  cards.forEach(c => c.classList.add("show"));
-  setTimeout(() => cards.forEach(c => c.classList.remove("show")), 700);
-
+  // Click logic
   cards.forEach(card => {
-    // Example: reveal emoji when clicked
-card.addEventListener("click", () => {
-  const emoji = card.dataset.emoji; // store emoji in data-attribute
-  card.innerHTML = `<span class="emoji">${emoji}</span>`;
-  card.classList.add("show");
-});
-    card.onclick = () => {
+    card.addEventListener("click", () => {
       if (lock || card.classList.contains("matched") || card.classList.contains("show")) return;
 
+      // reveal emoji
+      card.innerHTML = `<span class="emoji">${card.dataset.emoji}</span>`;
       card.classList.add("show");
 
       if (!first) {
         first = card;
       } else {
         lock = true;
-        if (first.textContent === card.textContent) {
-          first.classList.remove("show");
-          card.classList.remove("show");
+        // check match
+        if (first.dataset.emoji === card.dataset.emoji) {
           first.classList.add("matched");
           card.classList.add("matched");
           first = null;
@@ -314,13 +318,15 @@ card.addEventListener("click", () => {
         } else {
           setTimeout(() => {
             first.classList.remove("show");
+            first.innerHTML = "";
             card.classList.remove("show");
+            card.innerHTML = "";
             first = null;
             lock = false;
-          }, 300);
+          }, 700);
         }
       }
-    };
+    });
   });
 }
 
