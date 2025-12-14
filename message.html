@@ -273,7 +273,7 @@ function setupMemoryGame() {
 
   if (!first) {
     first = card;
-  } else {
+  } else if (first !== card) {
     lock = true;
 
     if (first.textContent === card.textContent) {
