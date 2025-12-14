@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <title>For A10 💙</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
+/* BASIC STYLING */
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,13 +70,9 @@ body {
 }
 
 /* MEMORY GAME */
-.memory-game {
-  display: grid; /* show grid */
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 12px;
-  padding: 16px;
-  max-width: 100%;
-  margin: 18px auto 0 auto;
+#memoryGame {
+  display: none;
+  margin-top: 18px;
 }
 
 .grid {
@@ -95,11 +91,9 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  transition: background 0.2s ease, transform 0.3s ease;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  user-select: none;
+  transition: background 0.2s ease;
   position: relative;
+  user-select: none;
 }
 
 /* Placeholder question mark */
@@ -112,12 +106,7 @@ body {
   transition: opacity 0.15s ease;
 }
 
-/* Hide placeholder when card is flipped or matched */
-.card.show::before,
-.card.matched::before {
-  opacity: 0;
-}
-
+/* Hide placeholder when flipped or matched */
 .card.show::before,
 .card.matched::before {
   opacity: 0;
@@ -125,17 +114,12 @@ body {
 
 .card .emoji {
   font-size: 32px;
-  opacity: 1;
-}
-
-.card .emoji.hidden-emoji {
-  visibility: hidden; /* completely invisible & not interactable */
+  visibility: hidden;
 }
 
 .card.show .emoji,
 .card.matched .emoji {
   visibility: visible;
-  opacity: 1;
 }
 
 /* Flipped/matched card backgrounds */
@@ -171,7 +155,7 @@ body {
 <div class="box">
   <h1>Hi, I hope you're surprised 😛</h1>
   <p>You’re officially 24 now. I made this website for you because you will always be one of the people I look up to and this is my way to impress you.
-      You're literally so cool, I can't believe I'm admitting it but I wish I knew half the things you do.</p>
+  You're literally so cool, I can't believe I'm admitting it but I wish I knew half the things you do.</p>
   <p>Happy Birthday 💙</p>
 
   <div class="book">
@@ -195,6 +179,7 @@ body {
 <audio id="confettiSound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
 <script>
+/* PHOTOS */
 const photos = [
   "images/IMG_3138.jpeg",
   "images/9455.jpeg",
@@ -214,7 +199,6 @@ const photos = [
 
 let index = 0;
 const GAME_PAGE = 13;
-
 const photo = document.getElementById("photo");
 const count = document.getElementById("count");
 const page = document.getElementById("page");
@@ -222,6 +206,7 @@ const game = document.getElementById("memoryGame");
 
 let gameStarted = false;
 
+/* UPDATE PAGE & SHOW/HIDE GAME */
 function updatePage() {
   photo.style.transform = "rotateY(90deg)";
   photo.style.opacity = "0";
@@ -233,8 +218,12 @@ function updatePage() {
     photo.style.transform = "rotateY(0)";
     photo.style.opacity = "1";
 
-    game.style.display = index === GAME_PAGE ? "block" : "none";
-    gameStarted = false;
+    if(index === GAME_PAGE) {
+      game.style.display = "block";
+      gameStarted = false; // reset game start flag
+    } else {
+      game.style.display = "none";
+    }
 
     if (index === photos.length - 1) launchConfetti();
   }, 300);
@@ -266,7 +255,7 @@ function launchConfetti() {
 
 /* MEMORY GAME */
 function startGame() {
-  if (gameStarted) return;
+  if(gameStarted) return;
   gameStarted = true;
   setupMemoryGame();
 }
@@ -282,36 +271,33 @@ function setupMemoryGame() {
   let lock = false;
   let matches = 0;
 
-  // Create cards
   const cards = cardsData.map(symbol => {
     const card = document.createElement("div");
     card.className = "card";
-    card.dataset.emoji = symbol; // store emoji in data-attribute
+    card.dataset.emoji = symbol;
     grid.appendChild(card);
     return card;
   });
 
-  // Click logic
   cards.forEach(card => {
     card.addEventListener("click", () => {
-      if (lock || card.classList.contains("matched") || card.classList.contains("show")) return;
+      if(lock || card.classList.contains("matched") || card.classList.contains("show")) return;
 
-      // reveal emoji
+      // Reveal emoji
       card.innerHTML = `<span class="emoji">${card.dataset.emoji}</span>`;
       card.classList.add("show");
 
-      if (!first) {
+      if(!first) {
         first = card;
       } else {
         lock = true;
-        // check match
-        if (first.dataset.emoji === card.dataset.emoji) {
+        if(first.dataset.emoji === card.dataset.emoji) {
           first.classList.add("matched");
           card.classList.add("matched");
           first = null;
           lock = false;
           matches++;
-          if (matches === symbols.length) launchConfetti();
+          if(matches === symbols.length) launchConfetti();
         } else {
           setTimeout(() => {
             first.classList.remove("show");
@@ -329,6 +315,5 @@ function setupMemoryGame() {
 
 updatePage();
 </script>
-
 </body>
 </html>
