@@ -82,6 +82,7 @@ body {
 }
 
 .card {
+  width: 80px;
   height: 80px;
   background: #222;
   border-radius: 14px;
@@ -90,14 +91,14 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  color: transparent;
-  transition: background 0.3s ease, color 0.3s ease;
+  color: transparent;          /* hidden by default */
+  transition: transform 0.2s ease, background 0.2s ease;
   user-select: none;
 }
 
 .card.show {
   background: #6c63ff;
-  color: white;
+  color: white;                /* visible ONLY when shown */
 }
 
 .card.matched {
