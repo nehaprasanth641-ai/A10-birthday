@@ -70,9 +70,16 @@ body {
 }
 
 /* MEMORY GAME */
-#memoryGame {
+.memory-game {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  max-width: 100%;
+  margin: auto;
   margin-top: 18px;
   display: none;
+
 }
 
 .grid {
