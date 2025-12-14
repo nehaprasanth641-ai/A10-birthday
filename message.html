@@ -91,20 +91,21 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  color: transparent;          /* hidden by default */
-  transition: transform 0.2s ease, background 0.2s ease;
+  color: transparent;
+  transition: background 0.2s ease;
   user-select: none;
 }
 
 .card.show {
   background: #6c63ff;
-  color: white;                /* visible ONLY when shown */
+  color: white;
 }
 
 .card.matched {
   background: #44bd32;
   color: white;
 }
+
 /* CONFETTI */
 .confetti {
   position: fixed;
@@ -134,10 +135,9 @@ body {
 
   <div class="book">
     <div class="page" id="page">
-     <img class="bookPhoto" id="photo" onclick="startGame()">
+      <img class="bookPhoto" id="photo" onclick="startGame()">
       <p class="photoCount" id="count"></p>
 
-      <!-- MEMORY GAME -->
       <div id="memoryGame">
         <p><b>A tiny memory game for you 🧠</b></p>
         <div class="grid" id="grid"></div>
@@ -179,6 +179,8 @@ const count = document.getElementById("count");
 const page = document.getElementById("page");
 const game = document.getElementById("memoryGame");
 
+let gameStarted = false;
+
 function updatePage() {
   photo.style.transform = "rotateY(90deg)";
   photo.style.opacity = "0";
@@ -186,18 +188,12 @@ function updatePage() {
   setTimeout(() => {
     photo.src = photos[index];
     count.textContent = `${index + 1} / ${photos.length}`;
-
     page.classList.toggle("black", index === 1);
-
     photo.style.transform = "rotateY(0)";
     photo.style.opacity = "1";
 
-    if (index === GAME_PAGE) {
-      game.style.display = "block";
-      setupMemoryGame();
-    } else {
-      game.style.display = "none";
-    }
+    game.style.display = index === GAME_PAGE ? "block" : "none";
+    gameStarted = false;
 
     if (index === photos.length - 1) launchConfetti();
   }, 300);
@@ -215,8 +211,7 @@ function prevPhoto() {
 
 /* CONFETTI */
 function launchConfetti() {
-  const sound = document.getElementById("confettiSound");
-  sound.play();
+  document.getElementById("confettiSound").play();
   for (let i = 0; i < 40; i++) {
     const c = document.createElement("div");
     c.className = "confetti";
@@ -230,15 +225,11 @@ function launchConfetti() {
 
 /* MEMORY GAME */
 function startGame() {
-  const game = document.getElementById("memoryGame");
-  game.style.display = "block";
+  if (gameStarted) return;
+  gameStarted = true;
   setupMemoryGame();
 }
 
-function endGame() {
-  const game = document.getElementById("memoryGame");
-  setTimeout(() => game.style.display = "none", 1200);
-}
 function setupMemoryGame() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -258,47 +249,41 @@ function setupMemoryGame() {
     return card;
   });
 
-  // 🔹 Show all initially
   cards.forEach(c => c.classList.add("show"));
-
-  // 🔹 Hide after 1.5s
-  setTimeout(() => {
-    cards.forEach(c => c.classList.remove("show"));
-  }, 700);
+  setTimeout(() => cards.forEach(c => c.classList.remove("show")), 700);
 
   cards.forEach(card => {
     card.onclick = () => {
-  if (lock || card.classList.contains("matched")) return;
+      if (lock || card.classList.contains("matched") || card.classList.contains("show")) return;
 
-  card.classList.add("show");
+      card.classList.add("show");
 
-  if (!first) {
-    first = card;
-  } else if (first !== card) {
-    lock = true;
-
-    if (first.textContent === card.textContent) {
-      first.classList.add("matched");
-      card.classList.add("matched");
-      first = null;
-      lock = false;
-
-      if (++matches === symbols.length) {
-        launchConfetti();
-        endGame();
+      if (!first) {
+        first = card;
+      } else {
+        lock = true;
+        if (first.textContent === card.textContent) {
+          first.classList.remove("show");
+          card.classList.remove("show");
+          first.classList.add("matched");
+          card.classList.add("matched");
+          first = null;
+          lock = false;
+          matches++;
+          if (matches === symbols.length) launchConfetti();
+        } else {
+          setTimeout(() => {
+            first.classList.remove("show");
+            card.classList.remove("show");
+            first = null;
+            lock = false;
+          }, 300);
+        }
       }
-    } else {
-      setTimeout(() => {
-        first.classList.remove("show");
-        card.classList.remove("show");
-        first = null;
-        lock = false;
-      }, 300);
-    }
-  }
-};
+    };
   });
 }
+
 updatePage();
 </script>
 
