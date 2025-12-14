@@ -90,13 +90,6 @@
       cursor: pointer;
     }
 
-    /* Stickers / interactive elements */
-    .sticker {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      animation: float 4s infinite alternate;
-    }
 
     @keyframes float {
       0% { transform: translateY(0); }
@@ -192,39 +185,7 @@
     let index = 0;
     let currentAudio = null;
 
-    function addStickers(page) {
-      // Remove old stickers
-      const oldStickers = page.querySelectorAll('.sticker');
-      oldStickers.forEach(s => s.remove());
-
-      // Example stickers per page
-      if(index === 0) {
-        const star = document.createElement('img');
-        star.src = 'stickers/star.png';
-        star.classList.add('sticker');
-        star.style.left = '30px';
-        star.style.top = '20px';
-        page.appendChild(star);
-      }
-
-      if(index === 3) {
-        const heart = document.createElement('img');
-        heart.src = 'stickers/heart.png';
-        heart.classList.add('sticker');
-        heart.style.left = '180px';
-        heart.style.top = '40px';
-        page.appendChild(heart);
-      }
-
-      if(index === 5) {
-        const confetti = document.createElement('img');
-        confetti.src = 'stickers/confetti.png';
-        confetti.classList.add('sticker');
-        confetti.style.left = '100px';
-        confetti.style.top = '50px';
-        page.appendChild(confetti);
-      }
-    }
+    
 
     function playSoundForPage(idx) {
       if(currentAudio) currentAudio.pause();
@@ -270,8 +231,6 @@
         photo.style.transform = "rotateY(0deg)";
         photo.style.opacity = "1";
 
-        addStickers(page);
-        playSoundForPage(index);
 
         // Launch confetti on last page as an example
         if(index === photos.length-1) launchConfetti();
