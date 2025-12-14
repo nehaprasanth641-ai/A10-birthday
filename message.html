@@ -133,7 +133,7 @@ body {
 
   <div class="book">
     <div class="page" id="page">
-      <img class="bookPhoto" id="photo">
+     <img class="bookPhoto" id="photo" onclick="startGame()">
       <p class="photoCount" id="count"></p>
 
       <!-- MEMORY GAME -->
@@ -228,6 +228,16 @@ function launchConfetti() {
 }
 
 /* MEMORY GAME */
+function startGame() {
+  const game = document.getElementById("memoryGame");
+  game.style.display = "block";
+  setupMemoryGame();
+}
+
+function endGame() {
+  const game = document.getElementById("memoryGame");
+  setTimeout(() => game.style.display = "none", 1200);
+}
 function setupMemoryGame() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -247,15 +257,14 @@ function setupMemoryGame() {
     return card;
   });
 
-  /* 🔹 SHOW ALL SYMBOLS INITIALLY */
-  cards.forEach(card => card.classList.add("show"));
+  // 🔹 Show all initially
+  cards.forEach(c => c.classList.add("show"));
 
-  /* 🔹 HIDE THEM AFTER 1.5s */
+  // 🔹 Hide after 1.5s
   setTimeout(() => {
-    cards.forEach(card => card.classList.remove("show"));
+    cards.forEach(c => c.classList.remove("show"));
   }, 1500);
 
-  /* 🔹 CLICK LOGIC */
   cards.forEach(card => {
     card.onclick = () => {
       if (lock || card.classList.contains("show") || card.classList.contains("matched")) return;
@@ -266,7 +275,6 @@ function setupMemoryGame() {
         first = card;
       } else {
         lock = true;
-
         if (first.textContent === card.textContent) {
           first.classList.add("matched");
           card.classList.add("matched");
@@ -276,6 +284,7 @@ function setupMemoryGame() {
 
           if (matches === symbols.length) {
             launchConfetti();
+            endGame(); // 👈 hides game
           }
         } else {
           setTimeout(() => {
@@ -289,10 +298,6 @@ function setupMemoryGame() {
     };
   });
 }
-    grid.appendChild(card);
-  });
-}
-
 updatePage();
 </script>
 
