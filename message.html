@@ -48,6 +48,10 @@
       overflow: hidden;
       transition: background 0.5s ease;
       background: #222;
+      <div id="memoryGame" style="display:none;">
+  <p><b>A tiny memory game for you 🧠</b></p>
+  <div class="grid" id="grid"></div>
+</div>
     }
 
     .page.black {
@@ -114,7 +118,42 @@
         opacity: 0;
       }
     }
+    #memoryGame {
+  margin-top: 18px;
+}
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.card {
+  width: 80px;
+  height: 80px;
+  background: #222;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: transparent;
+  transition: transform 0.3s ease, background 0.3s ease;
+  user-select: none;
+}
+
+.card.flipped {
+  background: #6c63ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.card.matched {
+  background: #44bd32;
+  color: white;
+}
   </style>
 </head>
 <body>
@@ -252,6 +291,67 @@
 
     // Initialize first page
     updatePage();
+    const GAME_PAGE = 7; // page 8 (0-based)
+let firstCard = null;
+let lock = false;
+let matches = 0;
+const game = document.getElementById("memoryGame");
+
+if (index === GAME_PAGE) {
+  game.style.display = "block";
+  setupMemoryGame();
+} else {
+  game.style.display = "none";
+}
+
+function setupMemoryGame() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  matches = 0;
+  firstCard = null;
+
+  const symbols = ["⭐", "🌙", "💙", "✨", "🍀", "🌸"];
+  const cards = [...symbols, ...symbols].sort(() => 0.5 - Math.random());
+
+  cards.forEach(symbol => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = symbol;
+
+    card.onclick = () => {
+      if (lock || card.classList.contains("flipped")) return;
+
+      card.classList.add("flipped");
+
+      if (!firstCard) {
+        firstCard = card;
+      } else {
+        lock = true;
+
+        if (firstCard.textContent === card.textContent) {
+          firstCard.classList.add("matched");
+          card.classList.add("matched");
+          matches++;
+          firstCard = null;
+          lock = false;
+
+          if (matches === symbols.length) {
+            launchConfetti();
+          }
+        } else {
+          setTimeout(() => {
+            firstCard.classList.remove("flipped");
+            card.classList.remove("flipped");
+            firstCard = null;
+            lock = false;
+          }, 700);
+        }
+      }
+    };
+
+    grid.appendChild(card);
+  });
+}
   </script>
 
 </body>
