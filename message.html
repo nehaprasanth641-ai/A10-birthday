@@ -147,6 +147,50 @@ body {
     opacity: 0;
   }
 }
+/* BLUR BACKGROUND WHEN GIFT APPEARS */
+body.gift-active .box {
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* OVERLAY */
+#giftOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+/* GIFT ICON */
+.giftBox {
+  font-size: 80px;
+  cursor: pointer;
+  animation: rotateGift 3s linear infinite,
+             glow 1.8s ease-in-out infinite;
+}
+
+/* TAP TEXT */
+.tapText {
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* ANIMATIONS */
+@keyframes rotateGift {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+  0%   { text-shadow: 0 0 8px #6c63ff; }
+  50%  { text-shadow: 0 0 18px #8e85ff; }
+  100% { text-shadow: 0 0 8px #6c63ff; }
+}
 </style>
 </head>
 
@@ -300,6 +344,7 @@ function setupMemoryGame() {
           lock = false;
           matches++;
           if(matches === symbols.length) launchConfetti();
+          setTimeout(showGift, 800);
         } else {
           setTimeout(() => {
             first.classList.remove("show");
@@ -314,8 +359,19 @@ function setupMemoryGame() {
     });
   });
 }
+function showGift() {
+  document.body.classList.add("gift-active");
+  document.getElementById("giftOverlay").style.display = "flex";
+}
 
+function openGift() {
+  window.location.href = "surprise.html";
+}
 updatePage();
 </script>
+<div id="giftOverlay">
+  <div class="giftBox" onclick="openGift()">🎁</div>
+  <div class="tapText">Tap to open</div>
+</div>
 </body>
 </html>
