@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>For A10 💙</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body {
   margin: 0;
@@ -105,6 +104,7 @@ body {
   color: white;
 }
 
+/* Confetti placeholder */
 .confetti {
   position: fixed;
   inset: 0;
@@ -112,6 +112,7 @@ body {
   z-index: 9997;
 }
 
+/* Celebration GIF */
 #celebrationGIF {
   display: none;
   position: fixed;
@@ -129,6 +130,7 @@ body {
   height: 100%;
 }
 
+/* Present overlay */
 #presentOverlay {
   display: none;
   position: fixed;
@@ -179,6 +181,7 @@ body {
   box-shadow: 0 0 25px gold;
 }
 
+/* Royal scroll paragraph */
 #letter {
   display: none;
   background: #fdf6e3;
@@ -257,6 +260,7 @@ body {
 </div>
 
 <script>
+// --- PHOTO BOOTH ---
 const photos = [
   "images/IMG_3138.jpeg","images/9455.jpeg","images/8946.jpeg",
   "images/27029.jpeg","images/16229.jpeg","images/16125.jpeg",
@@ -285,13 +289,12 @@ function prevPhoto(){
   updatePage();
 }
 
-// -------- MEMORY GAME --------
-const emojis = ["💙","🎂","✨","🎁"];
-let tiles = [...emojis, ...emojis];
-tiles.splice(4,0,"❤️"); // center decoration
+// --- MEMORY GAME ---
+const emojis = ["💙","🎂","✨"];
+let tiles = [...emojis, "❤️", ...emojis]; // red heart in center
 tiles.sort(()=>Math.random()-0.5);
 
-let first=null, lock=false, matched=0;
+let first=null, lock=false;
 
 function startMemory(){
   document.getElementById("memoryGame").style.display="block";
@@ -308,15 +311,17 @@ function startMemory(){
 function flip(card,symbol){
   if(lock || card.textContent) return;
   card.textContent=symbol;
+  if(symbol==="❤️"){
+    showConfettiAndGIF();
+    return;
+  }
   if(!first){
     first=card;
   } else {
     if(first.textContent===symbol){
       first.classList.add("correct");
       card.classList.add("correct");
-      matched++;
       first=null;
-      if(matched===emojis.length) setTimeout(showCelebrationGIF,300);
     } else {
       lock=true;
       setTimeout(()=>{
@@ -329,15 +334,18 @@ function flip(card,symbol){
   }
 }
 
-// -------- CELEBRATION GIF --------
+// --- CONFETTI & GIF ---
 const celebrationGIF=document.getElementById("celebrationGIF");
-function showCelebrationGIF(){
+const confettiDiv=document.getElementById("confetti");
+
+function showConfettiAndGIF(){
+  confettiDiv.innerHTML = "🎉🎉🎉"; // placeholder
   celebrationGIF.style.display="block";
   setTimeout(()=>{ celebrationGIF.style.transform="translate(-50%,-50%) scale(1)"; },50);
   setTimeout(showPresent,2200);
 }
 
-// -------- PRESENT --------
+// --- PRESENT ---
 const presentOverlay=document.getElementById("presentOverlay");
 const present=document.querySelector(".present");
 const contentDiv=document.getElementById("content");
@@ -348,7 +356,7 @@ function showPresent(){
   present.style.transform="translateY(0)";
 }
 
-// -------- PARAGRAPH --------
+// --- PARAGRAPH ---
 function openParagraph(){
   document.querySelector(".lid").style.transform="translateY(-80px) rotateX(60deg)";
   document.querySelector(".base").style.transform="translateY(40px)";
