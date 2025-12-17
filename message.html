@@ -9,29 +9,43 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: black;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .box {
   background: #111;
-  padding: 35px;
+  padding: 30px;
   border-radius: 22px;
   max-width: 380px;
+  width: 90%;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  position: relative;
+  z-index: 1;
 }
 
-.book { margin-top: 22px; perspective: 1000px; }
-.page { background: #222; border-radius: 18px; padding: 12px; }
-.bookPhoto { width: 100%; border-radius: 18px; transition: 0.6s; }
-.photoCount { margin: 8px 0; font-weight: bold; }
+.bookPhoto {
+  width: 100%;
+  border-radius: 18px;
+  margin-top: 15px;
+}
 
-.controls { display: flex; justify-content: space-between; margin-top: 14px; }
+.photoCount {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
 .controls button {
   padding: 10px 18px;
   border-radius: 22px;
@@ -40,28 +54,40 @@ body {
   color: white;
 }
 
-#memoryGame { display: none; margin-top: 18px; }
+#memoryGame {
+  display: none;
+  margin-top: 20px;
+}
 
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
 .card {
-  width: 80px; height: 80px;
+  height: 80px;
   background: #222;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 32px;
   cursor: pointer;
 }
 
+/* Blur background when gift active */
 body.gift-active .box {
   filter: blur(6px);
   pointer-events: none;
 }
 
+/* 🎁 Gift Overlay */
 #giftOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.5);
   display: none;
   align-items: center;
   justify-content: center;
@@ -69,14 +95,58 @@ body.gift-active .box {
   z-index: 9999;
 }
 
-.giftBox {
-  font-size: 80px;
+/* Gift Box */
+.gift {
+  width: 120px;
+  height: 120px;
+  position: relative;
   cursor: pointer;
-  animation: spin 3s linear infinite;
+  animation: spin 4s linear infinite;
+}
+
+.lid {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 45%;
+  background: crimson;
+  border-radius: 14px 14px 0 0;
+  transition: 0.8s;
+  z-index: 2;
+}
+
+.base {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70%;
+  background: red;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 0 25px gold;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Paragraph Reveal */
+#letter {
+  display: none;
+  background: #fdf6e3;
+  color: #222;
+  padding: 30px;
+  border-radius: 18px;
+  max-width: 600px;
+  text-align: center;
+  font-family: "Georgia", serif;
+}
+
+#letter button {
+  margin-top: 20px;
+  padding: 12px 22px;
+  border-radius: 20px;
+  border: none;
+  background: #cdb4ff;
 }
 </style>
 </head>
@@ -84,15 +154,14 @@ body.gift-active .box {
 <body>
 
 <div class="box">
-  <h1>Hi, I hope you're surprised 😛</h1>
-  <p>You’re officially 24 now. I made this website for you because you will always be one of the people I look up to and this is my way to impress you.</p>
-  <p>Happy Birthday 💙</p>
+  <h1>Hi 💙</h1>
+  <p>Scroll through the memories.</p>
 
-  <img class="bookPhoto" id="photo" onclick="startGame()">
-  <p class="photoCount" id="count"></p>
+  <img id="photo" class="bookPhoto">
+  <div class="photoCount" id="count"></div>
 
   <div id="memoryGame">
-    <p><b>A tiny memory game for you 🧠</b></p>
+    <p><b>Memory Game 🧠</b></p>
     <div class="grid" id="grid"></div>
   </div>
 
@@ -102,18 +171,23 @@ body.gift-active .box {
   </div>
 </div>
 
-<!-- 🎁 GIFT OVERLAY -->
+<!-- 🎁 GIFT -->
 <div id="giftOverlay">
-  <div class="giftBox" onclick="openGift()">🎁</div>
-  <p>Tap to open</p>
+  <div class="gift" onclick="openGift()">
+    <div class="lid"></div>
+    <div class="base"></div>
+  </div>
 
-  <div id="giftMessage" style="display:none; max-width:600px; text-align:center;">
+  <div id="letter">
     <p>
-Ever since we were little, you’ve always been kind of stuck to me...
-<br><br>
-I love you so much.
+      Ever since we were little, you’ve always been kind of stuck to me...
+      <br><br>
+      I love you so much.
     </p>
-    <button onclick="location.href='cake.html'">One last surprise 🎂</button>
+
+    <button onclick="alert('Cake comes next 🎂')">
+      Are you ready for the cake?
+    </button>
   </div>
 </div>
 
@@ -142,25 +216,70 @@ const count = document.getElementById("count");
 function updatePage() {
   photo.src = photos[index];
   count.textContent = `${index + 1} / ${photos.length}`;
+  if (index === 13) startMemory();
 }
 
 function nextPhoto() {
-  index = (index + 1) % photos.length;
+  index = Math.min(index + 1, photos.length - 1);
   updatePage();
 }
 
 function prevPhoto() {
-  index = (index - 1 + photos.length) % photos.length;
+  index = Math.max(index - 1, 0);
   updatePage();
 }
 
-function startGame() {
+/* MEMORY GAME */
+const emojis = ["💙","🎂","✨","🎁","🫶","🌙"];
+let cards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+let first = null, lock = false, matched = 0;
+
+function startMemory() {
+  document.getElementById("memoryGame").style.display = "block";
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  cards.forEach(e => {
+    const c = document.createElement("div");
+    c.className = "card";
+    c.onclick = () => flip(c, e);
+    grid.appendChild(c);
+  });
+}
+
+function flip(card, emoji) {
+  if (lock || card.textContent) return;
+  card.textContent = emoji;
+  if (!first) {
+    first = card;
+  } else {
+    if (first.textContent === emoji) {
+      matched++;
+      first = null;
+      if (matched === emojis.length) showGift();
+    } else {
+      lock = true;
+      setTimeout(() => {
+        first.textContent = "";
+        card.textContent = "";
+        first = null;
+        lock = false;
+      }, 600);
+    }
+  }
+}
+
+function showGift() {
+  document.body.classList.add("gift-active");
   document.getElementById("giftOverlay").style.display = "flex";
 }
 
 function openGift() {
-  document.querySelector(".giftBox").style.display = "none";
-  document.getElementById("giftMessage").style.display = "block";
+  document.querySelector(".lid").style.transform = "translateY(-80px) rotateX(60deg)";
+  document.querySelector(".base").style.transform = "translateY(40px)";
+  setTimeout(() => {
+    document.querySelector(".gift").style.display = "none";
+    document.getElementById("letter").style.display = "block";
+  }, 900);
 }
 
 updatePage();
