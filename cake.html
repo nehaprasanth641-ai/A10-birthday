@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Make a Wish — A10</title>
+    <title>Happy Birthday Etta!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -14,13 +14,12 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: white;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* STARRY BACKGROUND */
         .stars {
             position: absolute;
             width: 100%;
@@ -36,16 +35,17 @@
         }
 
         #instruction {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 3px;
             margin-bottom: 60px;
             text-align: center;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
             z-index: 2;
-            padding: 0 20px;
             transition: opacity 0.5s;
+            text-transform: uppercase;
+            color: #aaa;
         }
 
-        /* CHOCOLATE CAKE */
         .cake-container { 
             position: relative; 
             z-index: 2; 
@@ -53,104 +53,128 @@
             transform: scale(1.2);
         }
 
-        /* Cake Body - Chocolate Layers */
         .cake { 
-            width: 180px; 
-            height: 100px; 
-            background: #3d2b1f; /* Dark Chocolate */
+            width: 180px; height: 100px; 
+            background: #3d2b1f; 
             border-radius: 15px 15px 0 0; 
             position: relative; 
             box-shadow: inset 0 -10px 0 #2a1d15;
         }
 
-        /* Chocolate Frosting Drip */
         .cake::after { 
-            content: ''; 
-            position: absolute; 
-            width: 180px; 
-            height: 25px; 
-            background: #2a1d15; /* Darker Chocolate Drip */
-            top: 20px; 
-            left: 0;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            content: ''; position: absolute; 
+            width: 180px; height: 25px; 
+            background: #2a1d15; top: 20px; left: 0;
         }
 
-        /* Creamy Middle Layer */
         .cake::before {
-            content: '';
-            position: absolute;
-            width: 180px;
-            height: 10px;
-            background: #f5f5dc; /* Vanilla cream layer */
-            top: 55px;
-            left: 0;
+            content: ''; position: absolute;
+            width: 180px; height: 10px;
+            background: #f5f5dc; top: 55px; left: 0;
             z-index: 1;
         }
 
         .candle {
-            width: 12px; 
-            height: 50px; 
-            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #6c63ff 5px, #6c63ff 10px);
-            position: absolute; 
-            top: -50px; 
-            left: 50%; 
+            width: 12px; height: 50px; 
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff74a4 5px, #ff74a4 10px);
+            position: absolute; top: -50px; left: 50%; 
             transform: translateX(-50%);
             border-radius: 3px 3px 0 0;
         }
 
         .flame {
-            width: 16px; 
-            height: 26px; 
+            width: 16px; height: 26px; 
             background: #ff9800;
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            position: absolute; 
-            top: -30px; 
-            left: -2px;
+            position: absolute; top: -30px; left: -2px;
             box-shadow: 0 0 20px #ff9800, 0 0 40px #ff5722;
             animation: flicker 0.1s infinite alternate;
         }
 
         @keyframes flicker {
-            0% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
-            100% { transform: scale(1.1) rotate(1deg); opacity: 1; }
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.1) rotate(1deg); }
         }
 
-        /* SMOKE ANIMATION */
         .smoke {
-            position: absolute; 
-            width: 4px; 
-            height: 4px; 
+            position: absolute; width: 4px; height: 4px; 
             background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-            top: -30px; 
-            left: 4px; 
-            display: none;
+            border-radius: 50%; top: -30px; left: 4px; display: none;
         }
 
         @keyframes rise {
             0% { transform: translateY(0) scale(1); opacity: 0.5; }
-            100% { transform: translateY(-80px) scale(3); opacity: 0; }
+            100% { transform: translateY(-120px) scale(5); opacity: 0; }
         }
 
         #surprise-msg {
             display: none;
-            margin-top: 50px;
-            font-size: 1.4rem;
+            margin-top: 40px;
             text-align: center;
             z-index: 2;
-            animation: fadeIn 2s ease-in forwards;
-            color: #ffeb3b;
-            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+            animation: fadeIn 1.5s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #surprise-msg h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            letter-spacing: 4px;
+            font-weight: 800;
+            /* Cotton Candy Gradient */
+            background: linear-gradient(45deg, #ff74a4, #9f78ff, #00d2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(159, 120, 255, 0.3);
+        }
+
+        #surprise-msg p {
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        .replay-btn {
+            margin-top: 25px;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .replay-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
     </style>
 </head>
 <body>
 
     <div class="stars"></div>
+    <canvas id="fireworks"></canvas>
 
-    <h2 id="instruction">Tap and hold to blow the candles!</h2>
+    <audio id="birthdaySong" preload="auto">
+        <source src="https://actions.google.com/sounds/v1/human_voices/happy_birthday.ogg" type="audio/ogg">
+    </audio>
+
+    <h2 id="instruction">Hold to blow the candle</h2>
 
     <div class="cake-container" id="cakeContainer" 
          onmousedown="startBlow()" onmouseup="stopBlow()" 
@@ -164,8 +188,9 @@
     </div>
 
     <div id="surprise-msg">
-        <h3>✨ Happy Birthday A10! ✨</h3>
-        <p>Your wish is on its way...</p>
+        <h1>HAPPY BIRTHDAY ETTA!!</h1>
+        <p>Make a beautiful wish...</p>
+        <button class="replay-btn" onclick="resetPage()">WISH AGAIN</button>
     </div>
 
     <script>
@@ -174,28 +199,95 @@
         const smoke = document.getElementById('smoke');
         const instruction = document.getElementById('instruction');
         const surprise = document.getElementById('surprise-msg');
+        const audio = document.getElementById('birthdaySong');
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
         function startBlow() {
-            // Must hold for 1.5 seconds to "blow out"
+            if (flame.style.display === 'none') return;
             blowTimer = setTimeout(() => {
                 flame.style.display = 'none';
-                
-                // Trigger smoke animation
                 smoke.style.display = 'block';
                 smoke.style.animation = 'rise 2s forwards';
-                
                 instruction.style.opacity = '0';
+                
+                audio.currentTime = 0;
+                audio.play().catch(e => {});
+                
                 setTimeout(() => {
-                    instruction.innerText = "Make a wish! 🎂";
-                    instruction.style.opacity = '1';
                     surprise.style.display = 'block';
+                    startFireworks();
                 }, 500);
-            }, 1500);
+            }, 1200);
         }
 
         function stopBlow() {
             clearTimeout(blowTimer);
         }
+
+        function resetPage() {
+            location.reload();
+        }
+
+        // --- FIREWORKS SYSTEM (Cotton Candy Palette) ---
+        let particles = [];
+        const colors = ['#ff74a4', '#9f78ff', '#00d2ff', '#ffffff', '#ff99cc'];
+
+        function createParticle(x, y) {
+            return {
+                x, y,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                radius: Math.random() * 2.5 + 1,
+                velocity: {
+                    x: (Math.random() - 0.5) * 10,
+                    y: (Math.random() - 0.5) * 10
+                },
+                life: 100
+            };
+        }
+
+        function explode(x, y) {
+            for (let i = 0; i < 60; i++) {
+                particles.push(createParticle(x, y));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.x += p.velocity.x;
+                p.y += p.velocity.y;
+                p.velocity.y += 0.08;
+                p.life -= 0.7;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life / 100;
+                ctx.fill();
+
+                if (p.life <= 0) particles.splice(i, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+
+        let fireworkInterval;
+        function startFireworks() {
+            if (fireworkInterval) return;
+            animate();
+            explode(canvas.width / 2, canvas.height / 3);
+            fireworkInterval = setInterval(() => {
+                explode(Math.random() * canvas.width, Math.random() * (canvas.height / 2));
+            }, 700);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
