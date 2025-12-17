@@ -1,220 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Memory Game 🎮</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Birthday Celebration 🎉</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #f8e8ff, #e8f0ff);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #f8e8ff, #e8f0ff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 1s ease;
+  }
 
-    h2 {
-      margin-top: 20px;
-      color: #333;
-    }
+  /* PHOTO BOOTH */
+  #photo-booth {
+    margin-top: 30px;
+    text-align: center;
+  }
+  #photo-booth img {
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+  #next-slide {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #cdb4ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  #next-slide:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(205,180,255,0.7);
+  }
 
-    #game {
-      display: grid;
-      grid-template-columns: repeat(4, 100px);
-      grid-gap: 15px;
-      margin-top: 30px;
-    }
+  /* MEMORY GAME */
+  #memory-game-container {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .tile {
-      width: 100px;
-      height: 100px;
-      background: #cdb4ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      user-select: none;
-    }
+  #game {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .tile {
+    width: 80px;
+    height: 80px;
+    background: #cdb4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+  }
+  .tile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(205,180,255,0.7);
+  }
+  .tile.correct {
+    background: #6ee57e;
+    color: white;
+  }
 
-    .tile:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 12px rgba(205,180,255,0.7);
-    }
+  /* CELEBRATION GIF */
+  #celebration-gif {
+    display: none;
+    margin-top: 30px;
+    position: relative;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: all 2s ease;
+  }
+  #celebration-gif img {
+    width: 400px;
+    height: 400px;
+    display: block;
+    margin: auto;
+  }
 
-    .tile.correct {
-      background: #6ee57e;
-      color: white;
-    }
+  /* PRESENT */
+  #present-container {
+    display: none;
+    position: relative;
+    margin-top: 30px;
+    width: 150px;
+    height: 150px;
+    perspective: 800px;
+    cursor: pointer;
+  }
+  .present-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s ease;
+  }
+  .lid {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50%;
+    background: #d42c2c;
+    border-radius: 15px 15px 0 0;
+    z-index: 2;
+    transition: transform 0.8s ease;
+  }
+  .ribbon-h {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: gold;
+    z-index: 3;
+    transform: translateY(-50%);
+  }
+  .ribbon-v {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 10px;
+    height: 100%;
+    background: gold;
+    z-index: 3;
+    transform: translateX(-50%);
+  }
+  .box-body {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #ff4d4d;
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: 0 0 20px gold;
+    animation: glow 1.5s infinite alternate;
+  }
+  @keyframes glow {
+    from { box-shadow: 0 0 20px gold; }
+    to { box-shadow: 0 0 40px yellow; }
+  }
 
-    #confetti {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 999;
-    }
-
-    #celebration {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 30px;
-    }
-
-    #celebration img {
-      width: 200px;
-      height: 200px;
-    }
-
-    #claim-text {
-      margin-top: 15px;
-      font-size: 20px;
-      background: #ffd1dc;
-      padding: 10px 20px;
-      border-radius: 20px;
-      color: #333;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.2s ease;
-    }
-
-    #claim-text:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(255,200,200,0.7);
-    }
-  </style>
+  /* NOTE AND NEXT BUTTON */
+  #note-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+  }
+  #note-container p {
+    background: #ffd1dc;
+    padding: 15px 20px;
+    border-radius: 20px;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  #next-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 15px;
+    background: #cdb4ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  #next-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(205,180,255,0.7);
+  }
+</style>
 </head>
 <body>
 
-<h2>Memory Game 🎮</h2>
-<div id="game"></div>
+<!-- PHOTO BOOTH -->
+<div id="photo-booth">
+  <img id="photo" src="images/photo1.jpg" alt="photo booth">
+  <br>
+  <button id="next-slide">Next</button>
+</div>
 
-<div id="confetti"></div>
+<!-- MEMORY GAME -->
+<div id="memory-game-container">
+  <div id="game"></div>
+</div>
 
-<div id="celebration">
+<!-- CELEBRATION GIF -->
+<div id="celebration-gif">
   <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="celebration gif">
-  <div id="claim-text">Tap to claim 🎁</div>
+</div>
+
+<!-- PRESENT -->
+<div id="present-container">
+  <div class="present-box" id="present-box">
+    <div class="lid"></div>
+    <div class="ribbon-h"></div>
+    <div class="ribbon-v"></div>
+    <div class="box-body">🎁</div>
+  </div>
+</div>
+
+<!-- NOTE + NEXT BUTTON -->
+<div id="note-container">
+  <p>Happy Birthday! Hope you enjoy your special day 🎉💖</p>
+  <button id="next-button">Are you ready to go for the next thing?</button>
 </div>
 
 <script>
-  // Birthday-themed memory game symbols
-  const symbols = ['🎂','🎁','🎉','🕯️','🍰','🎈','🍭','🍬'];
-  const tilesArray = [...symbols, ...symbols];
-  let firstTile = null;
-  let secondTile = null;
-  let lockBoard = false;
-  let matchedCount = 0;
+  // ---------- PHOTO BOOTH ----------
+  const totalSlides = 14;
+  let currentSlide = 1;
+  const photo = document.getElementById('photo');
+  const nextSlideBtn = document.getElementById('next-slide');
 
-  const game = document.getElementById('game');
-
-  // Shuffle
-  function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
-  }
-
-  // Create tiles
-  shuffle(tilesArray).forEach(symbol => {
-    const tile = document.createElement('div');
-    tile.classList.add('tile');
-    tile.dataset.symbol = symbol;
-    tile.textContent = '';
-    tile.addEventListener('click', flipTile);
-    game.appendChild(tile);
+  nextSlideBtn.addEventListener('click', () => {
+    currentSlide++;
+    if(currentSlide <= totalSlides){
+      photo.src = `images/photo${currentSlide}.jpg`;
+    }
+    if(currentSlide === totalSlides){
+      nextSlideBtn.style.display = 'none';
+      startMemoryGame();
+    }
   });
 
-  function flipTile() {
-    if (lockBoard || this.classList.contains('correct') || this === firstTile) return;
+  // ---------- MEMORY GAME ----------
+  const symbols = ['🎂','🎁','🎉','🕯️','🍰','🎈','🍭','🍬'];
+  const tilesArray = [...symbols.slice(0,4), ...symbols.slice(0,4)]; // 4 pairs
+  tilesArray.splice(4,0,'❤️'); // center decoration
+  const game = document.getElementById('game');
+  let firstTile=null, secondTile=null, lockBoard=false, matchedCount=0;
+
+  function shuffle(array){return array.sort(()=>Math.random()-0.5);}
+
+  function startMemoryGame(){
+    shuffle(tilesArray).forEach(symbol=>{
+      const tile=document.createElement('div');
+      tile.classList.add('tile');
+      tile.dataset.symbol = symbol;
+      tile.textContent = '';
+      tile.addEventListener('click', flipTile);
+      game.appendChild(tile);
+    });
+  }
+
+  function flipTile(){
+    if(lockBoard || this.classList.contains('correct') || this===firstTile) return;
 
     this.textContent = this.dataset.symbol;
     this.classList.add('flip');
 
-    if (!firstTile) {
-      firstTile = this;
+    if(!firstTile){
+      firstTile=this;
       return;
     }
-
-    secondTile = this;
+    secondTile=this;
     checkMatch();
   }
 
-  function checkMatch() {
-    if (firstTile.dataset.symbol === secondTile.dataset.symbol) {
+  function checkMatch(){
+    if(firstTile.dataset.symbol===secondTile.dataset.symbol){
       firstTile.classList.add('correct');
       secondTile.classList.add('correct');
-      matchedCount += 2;
+      matchedCount +=2;
       resetTiles();
-
-      if (matchedCount === tilesArray.length) {
-        showCelebration();
+      if(matchedCount === tilesArray.length-1){ // minus center decoration
+        setTimeout(showCelebrationGIF,500);
       }
-    } else {
-      lockBoard = true;
-      setTimeout(() => {
-        firstTile.textContent = '';
-        secondTile.textContent = '';
+    }else{
+      lockBoard=true;
+      setTimeout(()=>{
+        firstTile.textContent='';
+        secondTile.textContent='';
         resetTiles();
-      }, 800);
+      },800);
     }
   }
 
-  function resetTiles() {
-    [firstTile, secondTile] = [null, null];
-    lockBoard = false;
+  function resetTiles(){[firstTile,secondTile]=[null,null];lockBoard=false;}
+
+  // ---------- CELEBRATION GIF ----------
+  const celebrationGIF = document.getElementById('celebration-gif');
+  function showCelebrationGIF(){
+    celebrationGIF.style.display='block';
+    setTimeout(()=>{
+      celebrationGIF.style.width='400px';
+      celebrationGIF.style.height='400px';
+      celebrationGIF.style.opacity='1';
+      document.body.style.background='radial-gradient(circle, #fff3b0, #f8e8ff)';
+    },50);
+    setTimeout(showPresent,2200);
   }
 
-  // Celebration and confetti
-  function showCelebration() {
-    startConfetti();
-    setTimeout(() => {
-      stopConfetti();
-      document.getElementById('celebration').style.display = 'flex';
-      game.style.display = 'none';
-    }, 2000);
+  // ---------- PRESENT ----------
+  const presentContainer = document.getElementById('present-container');
+  const presentBox = document.getElementById('present-box');
+  function showPresent(){
+    presentContainer.style.display='block';
+    presentBox.style.transform='rotateY(0deg)';
   }
 
-  // Confetti logic
-  let confettiInterval;
-  function startConfetti() {
-    const confettiContainer = document.getElementById('confetti');
-    confettiInterval = setInterval(() => {
-      const confetto = document.createElement('div');
-      confetto.textContent = '🎉';
-      confetto.style.position = 'absolute';
-      confetto.style.fontSize = Math.random() * 30 + 20 + 'px';
-      confetto.style.top = '0';
-      confetto.style.left = Math.random() * window.innerWidth + 'px';
-      confetto.style.opacity = Math.random();
-      confetto.style.transform = `rotate(${Math.random()*360}deg)`;
-      confettiContainer.appendChild(confetto);
+  presentContainer.addEventListener('click', ()=>{
+    document.querySelector('.lid').style.transform='translateY(-100%) rotateX(45deg)';
+    setTimeout(showNote,800);
+  });
 
-      // Animate
-      const fall = setInterval(() => {
-        const top = parseFloat(confetto.style.top);
-        if (top > window.innerHeight) {
-          confetto.remove();
-          clearInterval(fall);
-        } else {
-          confetto.style.top = top + 5 + 'px';
-        }
-      }, 20);
-    }, 100);
+  // ---------- NOTE + NEXT BUTTON ----------
+  const noteContainer = document.getElementById('note-container');
+  function showNote(){
+    noteContainer.style.display='flex';
   }
 
-  function stopConfetti() {
-    clearInterval(confettiInterval);
-    document.getElementById('confetti').innerHTML = '';
-  }
+  document.getElementById('next-button').addEventListener('click',()=>{
+    window.location.href='cake.html';
+  });
 
 </script>
 
