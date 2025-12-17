@@ -2,343 +2,358 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Birthday Celebration 🎉</title>
+<title>For A10 💙</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #f8e8ff, #e8f0ff);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     min-height: 100vh;
+    background: black;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     overflow-x: hidden;
-    transition: background 1s ease;
+    transition: filter 0.5s ease;
   }
 
-  /* PHOTO BOOTH */
-  #photo-booth {
-    margin-top: 30px;
+  .box {
+    background: #111;
+    padding: 30px;
+    border-radius: 22px;
+    max-width: 380px;
+    width: 90%;
     text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 1;
   }
-  #photo-booth img {
-    width: 300px;
-    height: 300px;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+  .bookPhoto {
+    width: 100%;
+    border-radius: 18px;
+    margin-top: 15px;
   }
-  #next-slide {
-    margin-top: 10px;
-    padding: 10px 20px;
+
+  .photoCount {
+    margin-top: 8px;
+    font-weight: bold;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+  }
+
+  .controls button {
+    padding: 10px 18px;
+    border-radius: 22px;
     border: none;
-    border-radius: 12px;
-    background: #cdb4ff;
+    background: #6c63ff;
+    color: white;
     cursor: pointer;
     transition: all 0.2s ease;
   }
-  #next-slide:hover {
+
+  .controls button:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(205,180,255,0.7);
+    box-shadow: 0 0 12px rgba(108,99,255,0.7);
   }
 
-  /* MEMORY GAME */
-  #memory-game-container {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #game {
-    display: grid;
-    grid-template-columns: repeat(3, 80px);
-    grid-gap: 12px;
-    justify-content: center;
+  #memoryGame {
+    display: none;
     margin-top: 20px;
   }
-  .tile {
-    width: 80px;
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .card {
     height: 80px;
-    background: #cdb4ff;
+    background: #222;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
-    border-radius: 12px;
+    font-size: 32px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
     user-select: none;
   }
-  .tile:hover {
+
+  .card:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(205,180,255,0.7);
+    box-shadow: 0 0 10px #6c63ff;
   }
-  .tile.correct {
+
+  .card.correct {
     background: #6ee57e;
     color: white;
   }
 
-  /* CELEBRATION GIF */
-  #celebration-gif {
+  /* Celebration GIF */
+  #celebrationGIF {
     display: none;
-    margin-top: 30px;
-    position: relative;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    transition: all 2s ease;
-  }
-  #celebration-gif img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
     width: 400px;
     height: 400px;
-    display: block;
-    margin: auto;
+    z-index: 9998;
+    transition: transform 2s ease, opacity 2s ease;
   }
 
-  /* PRESENT */
-  #present-container {
-    display: none;
-    position: relative;
-    margin-top: 30px;
-    width: 150px;
-    height: 150px;
-    perspective: 800px;
-    cursor: pointer;
-  }
-  .present-box {
+  #celebrationGIF img {
     width: 100%;
     height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 1s ease;
   }
+
+  /* Present */
+  #presentOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .present {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    transform: translateY(300px);
+    transition: transform 1s ease;
+    animation: rotateGlow 4s linear infinite;
+    cursor: pointer;
+  }
+
+  @keyframes rotateGlow {
+    0% { transform: translateY(300px) rotate(0deg); box-shadow: 0 0 20px gold; }
+    50% { box-shadow: 0 0 40px gold; }
+    100% { transform: translateY(0) rotate(360deg); box-shadow: 0 0 20px gold; }
+  }
+
   .lid {
     position: absolute;
     top: 0;
     width: 100%;
     height: 50%;
-    background: #d42c2c;
+    background: crimson;
     border-radius: 15px 15px 0 0;
     z-index: 2;
-    transition: transform 0.8s ease;
+    transition: transform 0.8s;
   }
-  .ribbon-h {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: gold;
-    z-index: 3;
-    transform: translateY(-50%);
-  }
-  .ribbon-v {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 10px;
-    height: 100%;
-    background: gold;
-    z-index: 3;
-    transform: translateX(-50%);
-  }
-  .box-body {
+
+  .base {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 100%;
-    background: #ff4d4d;
+    height: 70%;
+    background: red;
     border-radius: 0 0 15px 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5rem;
-    color: white;
-    box-shadow: 0 0 20px gold;
-    animation: glow 1.5s infinite alternate;
-  }
-  @keyframes glow {
-    from { box-shadow: 0 0 20px gold; }
-    to { box-shadow: 0 0 40px yellow; }
+    box-shadow: 0 0 25px gold;
   }
 
-  /* NOTE AND NEXT BUTTON */
-  #note-container {
+  /* Paragraph after present opens */
+  #letter {
     display: none;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+    background: #fdf6e3;
+    color: #222;
+    padding: 30px;
+    border-radius: 18px;
+    max-width: 600px;
     text-align: center;
+    font-family: "Georgia", serif;
+    z-index: 10000;
+    position: relative;
+    margin-top: 20px;
   }
-  #note-container p {
-    background: #ffd1dc;
-    padding: 15px 20px;
+
+  #letter button {
+    margin-top: 20px;
+    padding: 12px 22px;
     border-radius: 20px;
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  #next-button {
-    padding: 12px 25px;
     border: none;
-    border-radius: 15px;
     background: #cdb4ff;
     cursor: pointer;
-    transition: all 0.2s ease;
   }
-  #next-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(205,180,255,0.7);
-  }
+
 </style>
 </head>
+
 <body>
 
-<!-- PHOTO BOOTH -->
-<div id="photo-booth">
-  <img id="photo" src="images/photo1.jpg" alt="photo booth">
-  <br>
-  <button id="next-slide">Next</button>
-</div>
+<div class="box">
+  <h1>Hi 💙</h1>
+  <p>Scroll through the memories.</p>
 
-<!-- MEMORY GAME -->
-<div id="memory-game-container">
-  <div id="game"></div>
-</div>
+  <img id="photo" class="bookPhoto">
+  <div class="photoCount" id="count"></div>
 
-<!-- CELEBRATION GIF -->
-<div id="celebration-gif">
-  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="celebration gif">
-</div>
+  <div id="memoryGame">
+    <p><b>Memory Game 🧠</b></p>
+    <div class="grid" id="grid"></div>
+  </div>
 
-<!-- PRESENT -->
-<div id="present-container">
-  <div class="present-box" id="present-box">
-    <div class="lid"></div>
-    <div class="ribbon-h"></div>
-    <div class="ribbon-v"></div>
-    <div class="box-body">🎁</div>
+  <div class="controls">
+    <button onclick="prevPhoto()">← Back</button>
+    <button onclick="nextPhoto()">Next →</button>
   </div>
 </div>
 
-<!-- NOTE + NEXT BUTTON -->
-<div id="note-container">
-  <p>Happy Birthday! Hope you enjoy your special day 🎉💖</p>
-  <button id="next-button">Are you ready to go for the next thing?</button>
+<!-- Celebration GIF -->
+<div id="celebrationGIF">
+  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="celebration">
+</div>
+
+<!-- Present Overlay -->
+<div id="presentOverlay">
+  <div class="present" onclick="openPresent()">
+    <div class="lid"></div>
+    <div class="base"></div>
+  </div>
+</div>
+
+<!-- Letter -->
+<div id="letter">
+  <p>
+    Ever since we were little, you’ve always been kind of stuck to me...<br><br>
+    I love you so much.
+  </p>
+  <button onclick="window.location.href='cake.html'">
+    Are you ready for the cake?
+  </button>
 </div>
 
 <script>
-  // ---------- PHOTO BOOTH ----------
-  const totalSlides = 14;
-  let currentSlide = 1;
-  const photo = document.getElementById('photo');
-  const nextSlideBtn = document.getElementById('next-slide');
+const photos = [
+  "images/IMG_3138.jpeg",
+  "images/9455.jpeg",
+  "images/8946.jpeg",
+  "images/27029.jpeg",
+  "images/16229.jpeg",
+  "images/16125.jpeg",
+  "images/1611.jpeg",
+  "images/14849.jpeg",
+  "images/12658.jpeg",
+  "images/1000106712.jpeg",
+  "images/1000106709.jpeg",
+  "images/1000046709.jpeg",
+  "images/1000039572.jpeg",
+  "images/1000024923.jpeg"
+];
 
-  nextSlideBtn.addEventListener('click', () => {
-    currentSlide++;
-    if(currentSlide <= totalSlides){
-      photo.src = `images/photo${currentSlide}.jpg`;
-    }
-    if(currentSlide === totalSlides){
-      nextSlideBtn.style.display = 'none';
-      startMemoryGame();
-    }
+let index = 0;
+const photo = document.getElementById("photo");
+const count = document.getElementById("count");
+
+function updatePage() {
+  photo.src = photos[index];
+  count.textContent = `${index + 1} / ${photos.length}`;
+  if(index === photos.length - 1) startMemory();
+}
+
+function nextPhoto() {
+  index = Math.min(index + 1, photos.length - 1);
+  updatePage();
+}
+
+function prevPhoto() {
+  index = Math.max(index - 1, 0);
+  updatePage();
+}
+
+// ---------------- MEMORY GAME ----------------
+const emojis = ["💙","🎂","✨","🎁"];
+let tiles = [...emojis, ...emojis];
+tiles.splice(4,0,"❤️"); // center decoration
+tiles.sort(()=>Math.random()-0.5);
+
+let first=null, lock=false, matched=0;
+
+function startMemory(){
+  document.getElementById("memoryGame").style.display = "block";
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  tiles.forEach(symbol=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.onclick=()=>flip(card,symbol);
+    grid.appendChild(card);
   });
+}
 
-  // ---------- MEMORY GAME ----------
-  const symbols = ['🎂','🎁','🎉','🕯️','🍰','🎈','🍭','🍬'];
-  const tilesArray = [...symbols.slice(0,4), ...symbols.slice(0,4)]; // 4 pairs
-  tilesArray.splice(4,0,'❤️'); // center decoration
-  const game = document.getElementById('game');
-  let firstTile=null, secondTile=null, lockBoard=false, matchedCount=0;
-
-  function shuffle(array){return array.sort(()=>Math.random()-0.5);}
-
-  function startMemoryGame(){
-    shuffle(tilesArray).forEach(symbol=>{
-      const tile=document.createElement('div');
-      tile.classList.add('tile');
-      tile.dataset.symbol = symbol;
-      tile.textContent = '';
-      tile.addEventListener('click', flipTile);
-      game.appendChild(tile);
-    });
-  }
-
-  function flipTile(){
-    if(lockBoard || this.classList.contains('correct') || this===firstTile) return;
-
-    this.textContent = this.dataset.symbol;
-    this.classList.add('flip');
-
-    if(!firstTile){
-      firstTile=this;
-      return;
-    }
-    secondTile=this;
-    checkMatch();
-  }
-
-  function checkMatch(){
-    if(firstTile.dataset.symbol===secondTile.dataset.symbol){
-      firstTile.classList.add('correct');
-      secondTile.classList.add('correct');
-      matchedCount +=2;
-      resetTiles();
-      if(matchedCount === tilesArray.length-1){ // minus center decoration
-        setTimeout(showCelebrationGIF,500);
+function flip(card,symbol){
+  if(lock || card.textContent) return;
+  card.textContent = symbol;
+  if(!first){
+    first=card;
+  } else {
+    if(first.textContent===symbol){
+      first.classList.add("correct");
+      card.classList.add("correct");
+      matched++;
+      first=null;
+      if(matched===emojis.length){
+        setTimeout(showGIF,300);
       }
-    }else{
-      lockBoard=true;
+    } else {
+      lock=true;
       setTimeout(()=>{
-        firstTile.textContent='';
-        secondTile.textContent='';
-        resetTiles();
-      },800);
+        first.textContent="";
+        card.textContent="";
+        first=null;
+        lock=false;
+      },600);
     }
   }
+}
 
-  function resetTiles(){[firstTile,secondTile]=[null,null];lockBoard=false;}
+// ---------------- CELEBRATION GIF ----------------
+const celebrationGIF = document.getElementById("celebrationGIF");
+function showGIF(){
+  celebrationGIF.style.display="block";
+  setTimeout(()=>{
+    celebrationGIF.style.transform="translate(-50%, -50%) scale(1)";
+    // Optional page glow
+    document.body.style.filter="blur(2px)";
+  },50);
+  setTimeout(showPresent,2200);
+}
 
-  // ---------- CELEBRATION GIF ----------
-  const celebrationGIF = document.getElementById('celebration-gif');
-  function showCelebrationGIF(){
-    celebrationGIF.style.display='block';
-    setTimeout(()=>{
-      celebrationGIF.style.width='400px';
-      celebrationGIF.style.height='400px';
-      celebrationGIF.style.opacity='1';
-      document.body.style.background='radial-gradient(circle, #fff3b0, #f8e8ff)';
-    },50);
-    setTimeout(showPresent,2200);
-  }
+// ---------------- PRESENT ----------------
+const presentOverlay = document.getElementById("presentOverlay");
+const present = document.querySelector(".present");
+function showPresent(){
+  presentOverlay.style.display="flex";
+  // animate from bottom to center
+  present.style.transform="translateY(0)";
+}
 
-  // ---------- PRESENT ----------
-  const presentContainer = document.getElementById('present-container');
-  const presentBox = document.getElementById('present-box');
-  function showPresent(){
-    presentContainer.style.display='block';
-    presentBox.style.transform='rotateY(0deg)';
-  }
+function openPresent(){
+  document.querySelector(".lid").style.transform="translateY(-80px) rotateX(60deg)";
+  document.querySelector(".base").style.transform="translateY(40px)";
+  setTimeout(()=>{
+    presentOverlay.style.display="none";
+    document.body.style.filter="none";
+    document.getElementById("letter").style.display="block";
+  },900);
+}
 
-  presentContainer.addEventListener('click', ()=>{
-    document.querySelector('.lid').style.transform='translateY(-100%) rotateX(45deg)';
-    setTimeout(showNote,800);
-  });
-
-  // ---------- NOTE + NEXT BUTTON ----------
-  const noteContainer = document.getElementById('note-container');
-  function showNote(){
-    noteContainer.style.display='flex';
-  }
-
-  document.getElementById('next-button').addEventListener('click',()=>{
-    window.location.href='cake.html';
-  });
-
+updatePage();
 </script>
 
 </body>
