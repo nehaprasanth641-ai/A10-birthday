@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>For A10 💙</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-/* BASIC STYLING */
 body {
   margin: 0;
   min-height: 100vh;
@@ -26,134 +26,38 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
-.book {
-  margin-top: 22px;
-  perspective: 1000px;
-}
+.book { margin-top: 22px; perspective: 1000px; }
+.page { background: #222; border-radius: 18px; padding: 12px; }
+.bookPhoto { width: 100%; border-radius: 18px; transition: 0.6s; }
+.photoCount { margin: 8px 0; font-weight: bold; }
 
-.page {
-  background: #222;
-  border-radius: 18px;
-  padding: 12px;
-}
-
-.page.black {
-  background: black;
-}
-
-.bookPhoto {
-  width: 100%;
-  border-radius: 18px;
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  transform-origin: left;
-}
-
-.photoCount {
-  margin: 8px 0;
-  font-weight: bold;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-}
-
+.controls { display: flex; justify-content: space-between; margin-top: 14px; }
 .controls button {
   padding: 10px 18px;
   border-radius: 22px;
   border: none;
   background: #6c63ff;
   color: white;
-  font-size: 14px;
-  cursor: pointer;
 }
 
-/* MEMORY GAME */
-#memoryGame {
-  display: none;
-  margin-top: 18px;
-}
+#memoryGame { display: none; margin-top: 18px; }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .card {
-  width: 80px;
-  height: 80px;
-  background: #222;              
+  width: 80px; height: 80px;
+  background: #222;
   border-radius: 14px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  transition: background 0.2s ease;
-  position: relative;
-  user-select: none;
+  cursor: pointer;
 }
 
-/* Placeholder question mark */
-.card::before {
-  content: "❔";
-  opacity: 0.3;
-  font-size: 24px;
-  position: absolute;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-
-/* Hide placeholder when flipped or matched */
-.card.show::before,
-.card.matched::before {
-  opacity: 0;
-}
-
-.card .emoji {
-  font-size: 32px;
-  visibility: hidden;
-}
-
-.card.show .emoji,
-.card.matched .emoji {
-  visibility: visible;
-}
-
-/* Flipped/matched card backgrounds */
-.card.show {
-  background: #6c63ff;
-}
-
-.card.matched {
-  background: #44bd32;
-}
-
-/* CONFETTI */
-.confetti {
-  position: fixed;
-  width: 10px;
-  height: 16px;
-  top: -20px;
-  animation: fall linear forwards;
-  z-index: 999;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-/* BLUR BACKGROUND WHEN GIFT APPEARS */
 body.gift-active .box {
   filter: blur(6px);
   pointer-events: none;
 }
 
-/* OVERLAY */
 #giftOverlay {
   position: fixed;
   inset: 0;
@@ -165,31 +69,14 @@ body.gift-active .box {
   z-index: 9999;
 }
 
-/* GIFT ICON */
 .giftBox {
   font-size: 80px;
   cursor: pointer;
-  animation: rotateGift 3s linear infinite,
-             glow 1.8s ease-in-out infinite;
+  animation: spin 3s linear infinite;
 }
 
-/* TAP TEXT */
-.tapText {
-  margin-top: 12px;
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-/* ANIMATIONS */
-@keyframes rotateGift {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes glow {
-  0%   { text-shadow: 0 0 8px #6c63ff; }
-  50%  { text-shadow: 0 0 18px #8e85ff; }
-  100% { text-shadow: 0 0 8px #6c63ff; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 </style>
 </head>
@@ -198,22 +85,15 @@ body.gift-active .box {
 
 <div class="box">
   <h1>Hi, I hope you're surprised 😛</h1>
-  <p>You’re officially 24 now. I made this website for you because you will always be one of the people I look up to and this is my way to impress you.
-  You're literally so cool, I can't believe I'm admitting it but I wish I knew half the things you do.</p>
+  <p>You’re officially 24 now. I made this website for you because you will always be one of the people I look up to and this is my way to impress you.</p>
   <p>Happy Birthday 💙</p>
 
-  <div class="book">
-    <div class="page" id="page">
-      <img class="bookPhoto" id="photo" onclick="startGame()">
-      <p class="photoCount" id="count"></p>
+  <img class="bookPhoto" id="photo" onclick="startGame()">
+  <p class="photoCount" id="count"></p>
 
-      <div id="memoryGame">
-        <p><b>A tiny memory game for you 🧠
-          Click on the above picture🥰
-        </b></p>
-        <div class="grid" id="grid"></div>
-      </div>
-    </div>
+  <div id="memoryGame">
+    <p><b>A tiny memory game for you 🧠</b></p>
+    <div class="grid" id="grid"></div>
   </div>
 
   <div class="controls">
@@ -221,48 +101,23 @@ body.gift-active .box {
     <button onclick="nextPhoto()">Next →</button>
   </div>
 </div>
+
+<!-- 🎁 GIFT OVERLAY -->
 <div id="giftOverlay">
   <div class="giftBox" onclick="openGift()">🎁</div>
-  <div class="tapText">Tap to open</div>
-  <div class="message-content" id="giftMessage" style="display:none;">
-    </div>
-    <p>Ever since we were little, you’ve always been kind of stuck to me.
-Not in a bad way. More like you wanted to do everything I did. You wanted to hang out with me all the time. You introduced me to games, pulled me into your world, and somehow made it feel like mine too.
+  <p>Tap to open</p>
 
-I grew up playing with you, fighting with you, going places with you, just growing up with you. And even now, I realise how blindly I believe everything you say. Sometimes you’ll say the most ridiculous things, and I’ll still believe you simply because it’s you.
-
-I genuinely thought snow was made of chemicals and that we’d die if we ate it because you told me so. I even fought with my friends over it. That’s how convinced I was. To me, you always knew everything.
-
-I have so many childhood memories with you. We played endlessly. We laughed endlessly. And honestly, you are the funniest person in my life. No one makes me laugh like you do.
-
-You’re genuinely one of the coolest people I know. And you’ve always been so cool to me that just being related to you feels like a flex. 
-
-Everything that I am not, you are. And somehow, even better. And I think that’s why I’ve always admired you. Why I’ve always looked up to you.
-
-You’re such a gentle yet bold person. You have so much love in you. You look after me, our family, and everyone around you without even realising how much you do. Everything you say and everything you do stays with me.
-
-Sometimes I don’t even see you as my older brother. Sometimes you feel like my younger brother. This incredibly adorable, playful person I just want to protect.
-
-I know that if you weren’t there, I would’ve fallen into so many holes. The reason I didn’t is because you were guiding me through them. You took the falls for me.
-
-Yes, we’ve fought. Like proper cats and dogs. But none of that ever mattered. Because at the end of the day, you are still my brother. And I love you more than I ever say out loud.
-
-I know you love me too. I know you still see me as your baby sister. And honestly, that’s all I could ever ask for.
-
-You’re turning 24 today, and time feels like it’s moving way too fast. But somehow, you’re still the same. Playful. Funny. Not too serious. Still telling white lies that your sister continues to believe.
-
-Nothing has changed.
-And I hope it never does.
-
+  <div id="giftMessage" style="display:none; max-width:600px; text-align:center;">
+    <p>
+Ever since we were little, you’ve always been kind of stuck to me...
+<br><br>
 I love you so much.
- </p>
+    </p>
     <button onclick="location.href='cake.html'">One last surprise 🎂</button>
   </div>
 </div>
-<audio id="confettiSound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
 <script>
-/* PHOTOS */
 const photos = [
   "images/IMG_3138.jpeg",
   "images/9455.jpeg",
@@ -281,35 +136,12 @@ const photos = [
 ];
 
 let index = 0;
-const GAME_PAGE = 13;
 const photo = document.getElementById("photo");
 const count = document.getElementById("count");
-const page = document.getElementById("page");
-const game = document.getElementById("memoryGame");
 
-let gameStarted = false;
-
-/* UPDATE PAGE & SHOW/HIDE GAME */
 function updatePage() {
-  photo.style.transform = "rotateY(90deg)";
-  photo.style.opacity = "0";
-
-  setTimeout(() => {
-    photo.src = photos[index];
-    count.textContent = `${index + 1} / ${photos.length}`;
-    page.classList.toggle("black", index === 1);
-    photo.style.transform = "rotateY(0)";
-    photo.style.opacity = "1";
-
-    if(index === GAME_PAGE) {
-      game.style.display = "block";
-      gameStarted = false; // reset game start flag
-    } else {
-      game.style.display = "none";
-    }
-
-    if (index === photos.length - 1) launchConfetti();
-  }, 300);
+  photo.src = photos[index];
+  count.textContent = `${index + 1} / ${photos.length}`;
 }
 
 function nextPhoto() {
@@ -322,92 +154,17 @@ function prevPhoto() {
   updatePage();
 }
 
-/* CONFETTI */
-function launchConfetti() {
-  document.getElementById("confettiSound").play();
-  for (let i = 0; i < 40; i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.style.left = Math.random() * 100 + "vw";
-    c.style.background = `hsl(${Math.random() * 360},80%,60%)`;
-    c.style.animationDuration = 2 + Math.random() * 3 + "s";
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 5000);
-  }
-}
-
-/* MEMORY GAME */
 function startGame() {
-  if(gameStarted) return;
-  gameStarted = true;
-  setupMemoryGame();
-}
-
-function setupMemoryGame() {
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-
-  const symbols = ["⭐","🌙","💙","✨","🍀","🌸"];
-  const cardsData = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
-
-  let first = null;
-  let lock = false;
-  let matches = 0;
-
-  const cards = cardsData.map(symbol => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.dataset.emoji = symbol;
-    grid.appendChild(card);
-    return card;
-  });
-
-  cards.forEach(card => {
-    card.addEventListener("click", () => {
-      if(lock || card.classList.contains("matched") || card.classList.contains("show")) return;
-
-      // Reveal emoji
-      card.innerHTML = `<span class="emoji">${card.dataset.emoji}</span>`;
-      card.classList.add("show");
-
-      if(!first) {
-        first = card;
-      } else {
-        lock = true;
-        if(first.dataset.emoji === card.dataset.emoji) {
-          first.classList.add("matched");
-          card.classList.add("matched");
-          first = null;
-          lock = false;
-          matches++;
-          if(matches === symbols.length) launchConfetti();
-          setTimeout(showGift, 800);
-        } else {
-          setTimeout(() => {
-            first.classList.remove("show");
-            first.innerHTML = "";
-            card.classList.remove("show");
-            card.innerHTML = "";
-            first = null;
-            lock = false;
-          }, 700);
-        }
-      }
-    });
-  });
-}
-function showGift() {
-  document.body.classList.add("gift-active");
   document.getElementById("giftOverlay").style.display = "flex";
 }
 
 function openGift() {
   document.querySelector(".giftBox").style.display = "none";
-  document.querySelector(".tapText").style.display = "none";
   document.getElementById("giftMessage").style.display = "block";
 }
-}
+
 updatePage();
 </script>
+
 </body>
 </html>
