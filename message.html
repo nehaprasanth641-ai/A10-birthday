@@ -221,10 +221,11 @@ body.gift-active .box {
     <button onclick="nextPhoto()">Next →</button>
   </div>
 </div>
-div id="giftOverlay">
+<div id="giftOverlay">
   <div class="giftBox" onclick="openGift()">🎁</div>
   <div class="tapText">Tap to open</div>
   <div class="message-content" id="giftMessage" style="display:none;">
+    </div>
     <p>Ever since we were little, you’ve always been kind of stuck to me.
 Not in a bad way. More like you wanted to do everything I did. You wanted to hang out with me all the time. You introduced me to games, pulled me into your world, and somehow made it feel like mine too.
 
@@ -401,13 +402,12 @@ function showGift() {
 }
 
 function openGift() {
-  window.location.href = "message.html";
+  document.querySelector(".giftBox").style.display = "none";
+  document.querySelector(".tapText").style.display = "none";
+  document.getElementById("giftMessage").style.display = "block";
+}
 }
 updatePage();
 </script>
-<div id="giftOverlay">
-  <div class="giftBox" onclick="openGift()">🎁</div>
-  <div class="tapText">Tap to open</div>
-</div>
 </body>
 </html>
