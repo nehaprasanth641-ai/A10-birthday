@@ -61,12 +61,6 @@ body {
   background: #6c63ff;
   color: white;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.controls button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(108,99,255,0.7);
 }
 
 #memoryGame {
@@ -90,13 +84,7 @@ body {
   justify-content: center;
   font-size: 32px;
   cursor: pointer;
-  transition: all 0.2s ease;
   user-select: none;
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #6c63ff;
 }
 
 .card.correct {
@@ -104,7 +92,7 @@ body {
   color: white;
 }
 
-/* Confetti placeholder */
+/* Confetti */
 .confetti {
   position: fixed;
   inset: 0;
@@ -193,8 +181,6 @@ body {
   overflow-y: auto;
   text-align: center;
   font-family: "Georgia", serif;
-  z-index: 10001;
-  position: relative;
   margin-top: 20px;
   transform-origin: top center;
   animation: unroll 1.2s ease forwards;
@@ -285,16 +271,16 @@ function nextPhoto(){
 }
 
 function prevPhoto(){
-  index = Math.max(index - 0, 0);
+  index = Math.max(index - 1, 0);
   updatePage();
 }
 
 // --- MEMORY GAME ---
 const emojis = ["💙","🎂","✨"];
-let tiles = [...emojis, "❤️", ...emojis]; // red heart in center
+let tiles = [...emojis, ...emojis, "❤️"]; // 3x3 total 9 tiles
 tiles.sort(()=>Math.random()-0.5);
 
-let first=null, lock=false;
+let first=null, lock=false, matched=0;
 
 function startMemory(){
   document.getElementById("memoryGame").style.display="block";
@@ -311,10 +297,6 @@ function startMemory(){
 function flip(card,symbol){
   if(lock || card.textContent) return;
   card.textContent=symbol;
-  if(symbol==="❤️"){
-    showConfettiAndGIF();
-    return;
-  }
   if(!first){
     first=card;
   } else {
@@ -322,6 +304,8 @@ function flip(card,symbol){
       first.classList.add("correct");
       card.classList.add("correct");
       first=null;
+      matched++;
+      if(matched === emojis.length) triggerGIFConfetti();
     } else {
       lock=true;
       setTimeout(()=>{
@@ -334,12 +318,12 @@ function flip(card,symbol){
   }
 }
 
-// --- CONFETTI & GIF ---
+// --- GIF & Confetti ---
 const celebrationGIF=document.getElementById("celebrationGIF");
 const confettiDiv=document.getElementById("confetti");
 
-function showConfettiAndGIF(){
-  confettiDiv.innerHTML = "🎉🎉🎉"; // placeholder
+function triggerGIFConfetti(){
+  confettiDiv.innerHTML = "🎉🎉🎉"; // Placeholder, can use real confetti library
   celebrationGIF.style.display="block";
   setTimeout(()=>{ celebrationGIF.style.transform="translate(-50%,-50%) scale(1)"; },50);
   setTimeout(showPresent,2200);
@@ -368,6 +352,5 @@ function openParagraph(){
 
 updatePage();
 </script>
-
 </body>
 </html>
