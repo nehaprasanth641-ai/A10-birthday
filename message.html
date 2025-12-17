@@ -13,9 +13,9 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   color: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   overflow-x: hidden;
 }
 
@@ -105,7 +105,6 @@ body {
   color: white;
 }
 
-/* Confetti placeholder */
 .confetti {
   position: fixed;
   inset: 0;
@@ -113,7 +112,6 @@ body {
   z-index: 9997;
 }
 
-/* Celebration GIF */
 #celebrationGIF {
   display: none;
   position: fixed;
@@ -131,7 +129,6 @@ body {
   height: 100%;
 }
 
-/* Present Overlay */
 #presentOverlay {
   display: none;
   position: fixed;
@@ -182,19 +179,6 @@ body {
   box-shadow: 0 0 25px gold;
 }
 
-/* Tap to claim button */
-#tapToClaim {
-  display: none;
-  margin-top: 20px;
-  padding: 12px 22px;
-  border-radius: 22px;
-  border: none;
-  background: #cdb4ff;
-  cursor: pointer;
-  z-index: 10000;
-}
-
-/* Royal Scroll Paragraph */
 #letter {
   display: none;
   background: #fdf6e3;
@@ -251,32 +235,25 @@ body {
   </div>
 </div>
 
-<!-- Confetti placeholder -->
 <div class="confetti" id="confetti"></div>
 
-<!-- Celebration GIF -->
 <div id="celebrationGIF">
   <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="celebration">
 </div>
 
-<!-- Present Overlay -->
 <div id="presentOverlay">
-  <div class="present" onclick="claimPresent()">
+  <div class="present" onclick="openParagraph()">
     <div class="lid"></div>
     <div class="base"></div>
   </div>
-  <button id="tapToClaim">Tap to claim</button>
 </div>
 
-<!-- Letter -->
 <div id="letter">
   <p>
     Ever since we were little, you’ve always been kind of stuck to me...<br><br>
     I love you so much.
   </p>
-  <button onclick="window.location.href='cake.html'">
-    Are you ready for the cake?
-  </button>
+  <button onclick="window.location.href='cake.html'">Are you ready for the cake?</button>
 </div>
 
 <script>
@@ -292,23 +269,23 @@ let index = 0;
 const photo = document.getElementById("photo");
 const count = document.getElementById("count");
 
-function updatePage() {
+function updatePage(){
   photo.src = photos[index];
   count.textContent = `${index + 1} / ${photos.length}`;
   if(index === photos.length - 1) startMemory();
 }
 
-function nextPhoto() {
+function nextPhoto(){
   index = Math.min(index + 1, photos.length - 1);
   updatePage();
 }
 
-function prevPhoto() {
-  index = Math.max(index - 1, 0);
+function prevPhoto(){
+  index = Math.max(index - 0, 0);
   updatePage();
 }
 
-// ---------------- MEMORY GAME ----------------
+// -------- MEMORY GAME --------
 const emojis = ["💙","🎂","✨","🎁"];
 let tiles = [...emojis, ...emojis];
 tiles.splice(4,0,"❤️"); // center decoration
@@ -317,20 +294,20 @@ tiles.sort(()=>Math.random()-0.5);
 let first=null, lock=false, matched=0;
 
 function startMemory(){
-  document.getElementById("memoryGame").style.display = "block";
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  tiles.forEach(symbol=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.onclick=()=>flip(card,symbol);
-    grid.appendChild(card);
+  document.getElementById("memoryGame").style.display="block";
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+  tiles.forEach(sym=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.onclick=()=>flip(c,sym);
+    grid.appendChild(c);
   });
 }
 
 function flip(card,symbol){
   if(lock || card.textContent) return;
-  card.textContent = symbol;
+  card.textContent=symbol;
   if(!first){
     first=card;
   } else {
@@ -339,9 +316,7 @@ function flip(card,symbol){
       card.classList.add("correct");
       matched++;
       first=null;
-      if(matched===emojis.length){
-        setTimeout(showCelebrationGIF,300);
-      }
+      if(matched===emojis.length) setTimeout(showCelebrationGIF,300);
     } else {
       lock=true;
       setTimeout(()=>{
@@ -354,32 +329,29 @@ function flip(card,symbol){
   }
 }
 
-// ---------------- CELEBRATION GIF ----------------
-const celebrationGIF = document.getElementById("celebrationGIF");
+// -------- CELEBRATION GIF --------
+const celebrationGIF=document.getElementById("celebrationGIF");
 function showCelebrationGIF(){
   celebrationGIF.style.display="block";
-  setTimeout(()=>{ celebrationGIF.style.transform="translate(-50%, -50%) scale(1)"; },50);
-  setTimeout(showPresent,2200); // Present appears after GIF
+  setTimeout(()=>{ celebrationGIF.style.transform="translate(-50%,-50%) scale(1)"; },50);
+  setTimeout(showPresent,2200);
 }
 
-// ---------------- PRESENT ----------------
-const presentOverlay = document.getElementById("presentOverlay");
-const present = document.querySelector(".present");
-const tapButton = document.getElementById("tapToClaim");
-const contentDiv = document.getElementById("content");
+// -------- PRESENT --------
+const presentOverlay=document.getElementById("presentOverlay");
+const present=document.querySelector(".present");
+const contentDiv=document.getElementById("content");
 
 function showPresent(){
   presentOverlay.style.display="flex";
-  // blur background when present appears
   contentDiv.style.filter="blur(4px)";
   present.style.transform="translateY(0)";
-  setTimeout(()=>{ tapButton.style.display="block"; },800);
 }
 
-function claimPresent(){
+// -------- PARAGRAPH --------
+function openParagraph(){
   document.querySelector(".lid").style.transform="translateY(-80px) rotateX(60deg)";
   document.querySelector(".base").style.transform="translateY(40px)";
-  tapButton.style.display="none";
   setTimeout(()=>{
     presentOverlay.style.display="none";
     document.getElementById("letter").style.display="block";
