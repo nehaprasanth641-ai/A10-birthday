@@ -14,7 +14,7 @@
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             background: #000;
             color: white;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         /* STAGE 1: ENTRANCE CARD */
@@ -27,7 +27,7 @@
             z-index: 100;
         }
 
-        /* STAGE 2: PHOTO BOOTH & GAME (HIDDEN INITIALLY) */
+        /* STAGE 2: MAIN AREA */
         #main-container {
             display: none; 
             width: 90%;
@@ -50,7 +50,7 @@
             background: #222;
         }
 
-        /* MEMORY GAME GRID */
+        /* MEMORY GAME GRID (Hidden until last photo) */
         #memoryGame {
             display: none;
             margin-top: 20px;
@@ -65,19 +65,20 @@
         }
 
         .tile {
-            height: 70px;
+            height: 75px;
             background: #222;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
         .tile.matched { background: #6ee57e; cursor: default; }
 
-        /* STAGE 3: CELEBRATION OVERLAY */
+        /* STAGE 3: OVERLAY (GIF & PRESENT) */
         #celebration-overlay {
             display: none;
             position: fixed;
@@ -91,7 +92,7 @@
 
         #party-gif { width: 280px; display: none; }
 
-        /* THE PRESENT (GLOWING & ROTATING) */
+        /* THE PRESENT */
         .gift-box {
             display: none;
             width: 120px;
@@ -116,7 +117,7 @@
             color: #2d2d2d;
             padding: 30px;
             border-radius: 5px;
-            width: 80%;
+            width: 85%;
             max-width: 500px;
             font-family: 'Georgia', serif;
             text-align: center;
@@ -128,14 +129,17 @@
         @keyframes unroll { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 15px;
             border: none;
             background: #cdb4ff;
             font-weight: bold;
             cursor: pointer;
             margin: 10px;
+            transition: 0.2s;
         }
+
+        button:hover { transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -148,16 +152,16 @@
 
     <div id="main-container">
         <div class="photo-card">
-            <h2 id="header">Hi 💙</h2>
+            <h2 id="header">Memories 💙</h2>
             <img id="display" class="bookPhoto">
             <p id="counter">1 / 14</p>
             
             <div id="memoryGame">
-                <p><b>Match 4 pairs & find the ❤️</b></p>
+                <p><b>Match pairs and find the ❤️ to win!</b></p>
                 <div class="grid" id="grid"></div>
             </div>
 
-            <div style="display:flex; justify-content: space-between;">
+            <div style="display:flex; justify-content: space-between; margin-top:15px;">
                 <button onclick="changePhoto(-1)">Back</button>
                 <button onclick="changePhoto(1)">Next</button>
             </div>
@@ -170,11 +174,13 @@
         <div class="gift-box" id="final-gift" onclick="openScroll()">
             <div class="lid"></div>
             <div class="base"></div>
-            <p style="color: gold; font-size: 14px; margin-top: 15px;">TAP TO OPEN</p>
+            <p style="color: gold; font-size: 14px; margin-top: 15px; font-weight:bold;">TAP TO OPEN</p>
         </div>
 
         <div id="scroll-message">
-            <p>"Brothers aren't just family; they're the ones who know your secrets, share your laughs, and stand by you through every storm. Happy Birthday, A10! 💙"</p>
+            <p style="font-size: 1.1rem; line-height: 1.6;">
+                "Brothers aren't just family; they're the ones who know your secrets, share your laughs, and stand by you through every storm. Happy Birthday, A10! 💙"
+            </p>
             <button onclick="window.location.href='cake.html'">Ready for the cake?</button>
         </div>
     </div>
@@ -193,13 +199,13 @@
         document.getElementById('display').src = photos[currentIdx];
         document.getElementById('counter').innerText = `${currentIdx + 1} / ${photos.length}`;
         
-        // Only show Memory Game on the VERY last photo
+        // Show Memory Game only on the last photo
         if(currentIdx === photos.length - 1) {
             document.getElementById('memoryGame').style.display = 'block';
-            document.getElementById('header').innerText = "The Final Challenge 🧠";
+            document.getElementById('header').innerText = "The Final Boss 🧠";
         } else {
             document.getElementById('memoryGame').style.display = 'none';
-            document.getElementById('header').innerText = "Hi 💙";
+            document.getElementById('header').innerText = "Memories 💙";
         }
     }
 
@@ -217,6 +223,7 @@
     icons.forEach(icon => {
         const tile = document.createElement('div');
         tile.className = 'tile';
+        tile.setAttribute('data-emoji', icon); // Needed for checkVictory
         tile.onclick = () => {
             if(tile.textContent || flipped.length === 2 || tile.classList.contains('matched')) return;
             tile.textContent = icon;
@@ -243,22 +250,26 @@
     });
 
     function checkVictory() {
-        const heartFound = document.querySelector('.tile.matched[textContent="❤️"]');
+        // Logic: All 4 pairs matched AND the heart is found
+        const heartFound = document.querySelector('.tile.matched[data-emoji="❤️"]');
         if(matches === 4 && heartFound) {
-            // Start Celebration
-            document.getElementById('main-container').style.filter = "blur(10px)";
-            const overlay = document.getElementById('celebration-overlay');
-            overlay.style.display = 'flex';
-            
-            const gif = document.getElementById('party-gif');
-            gif.style.display = 'block';
-            
-            // Hide GIF and show Gift after 3 seconds
-            setTimeout(() => {
-                gif.style.display = 'none';
-                document.getElementById('final-gift').style.display = 'block';
-            }, 3000);
+            setTimeout(startCelebration, 600);
         }
+    }
+
+    function startCelebration() {
+        document.getElementById('main-container').style.filter = "blur(10px)";
+        const overlay = document.getElementById('celebration-overlay');
+        overlay.style.display = 'flex';
+        
+        const gif = document.getElementById('party-gif');
+        gif.style.display = 'block';
+        
+        // After 3 seconds, hide GIF and show the rotating Present
+        setTimeout(() => {
+            gif.style.display = 'none';
+            document.getElementById('final-gift').style.display = 'block';
+        }, 3000);
     }
 
     function openScroll() {
