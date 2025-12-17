@@ -11,7 +11,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: #000;
             color: white;
             overflow-x: hidden;
@@ -50,7 +50,7 @@
             background: #222;
         }
 
-        /* MEMORY GAME GRID (Hidden until last photo) */
+        /* MEMORY GAME GRID */
         #memoryGame {
             display: none;
             margin-top: 20px;
@@ -92,7 +92,6 @@
 
         #party-gif { width: 280px; display: none; }
 
-        /* THE PRESENT */
         .gift-box {
             display: none;
             width: 120px;
@@ -100,6 +99,7 @@
             position: relative;
             cursor: pointer;
             animation: rotateGlow 3s infinite linear;
+            text-align: center;
         }
 
         @keyframes rotateGlow {
@@ -116,14 +116,17 @@
             background: #fdf6e3;
             color: #2d2d2d;
             padding: 30px;
-            border-radius: 5px;
+            border-radius: 15px;
             width: 85%;
             max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
             font-family: 'Georgia', serif;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             transform-origin: top;
             animation: unroll 1.5s forwards;
+            z-index: 300;
         }
 
         @keyframes unroll { from { transform: scaleY(0); } to { transform: scaleY(1); } }
@@ -178,271 +181,33 @@
         </div>
 
         <div id="scroll-message">
-            <p style="font-size: 1.1rem; line-height: 1.6;">
-             
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>For A10 💙</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: black;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow-x: hidden;
-}
-
-#content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.box {
-  background: #111;
-  padding: 30px;
-  border-radius: 22px;
-  max-width: 380px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-  position: relative;
-  z-index: 1;
-}
-
-.bookPhoto {
-  width: 100%;
-  border-radius: 18px;
-  margin-top: 15px;
-}
-
-.photoCount {
-  margin-top: 8px;
-  font-weight: bold;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-}
-
-.controls button {
-  padding: 10px 18px;
-  border-radius: 22px;
-  border: none;
-  background: #6c63ff;
-  color: white;
-  cursor: pointer;
-}
-
-#memoryGame {
-  display: none;
-  margin-top: 20px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.card {
-  height: 80px;
-  background: #222;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.card.correct {
-  background: #6ee57e;
-  color: white;
-}
-
-/* Confetti */
-.confetti {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9997;
-}
-
-/* Celebration GIF */
-#celebrationGIF {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  width: 400px;
-  height: 400px;
-  z-index: 9998;
-  transition: transform 2s ease, opacity 2s ease;
-}
-
-#celebrationGIF img {
-  width: 100%;
-  height: 100%;
-}
-
-/* Present overlay */
-#presentOverlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(6px);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.present {
-  width: 150px;
-  height: 150px;
-  position: relative;
-  transform: translateY(300px);
-  transition: transform 1s ease;
-  animation: rotateGlow 4s linear infinite;
-  cursor: pointer;
-}
-
-@keyframes rotateGlow {
-  0% { transform: translateY(300px) rotate(0deg); box-shadow: 0 0 20px gold; }
-  50% { box-shadow: 0 0 40px gold; }
-  100% { transform: translateY(0) rotate(360deg); box-shadow: 0 0 20px gold; }
-}
-
-.lid {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 50%;
-  background: crimson;
-  border-radius: 15px 15px 0 0;
-  z-index: 2;
-  transition: transform 0.8s;
-}
-
-.base {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 70%;
-  background: red;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 0 25px gold;
-}
-
-/* Royal scroll paragraph */
-#letter {
-  display: none;
-  background: #fdf6e3;
-  color: #222;
-  padding: 30px;
-  border-radius: 18px;
-  max-width: 600px;
-  max-height: 60vh;
-  overflow-y: auto;
-  text-align: center;
-  font-family: "Georgia", serif;
-  margin-top: 20px;
-  transform-origin: top center;
-  animation: unroll 1.2s ease forwards;
-}
-
-@keyframes unroll {
-  0% { transform: scaleY(0); }
-  100% { transform: scaleY(1); }
-}
-
-#letter button {
-  margin-top: 20px;
-  padding: 12px 22px;
-  border-radius: 20px;
-  border: none;
-  background: #cdb4ff;
-  cursor: pointer;
-}
-</style>
-</head>
-
-<body>
-
-<div id="content">
-  <div class="box">
-    <h1>Hi 💙</h1>
-    <p>A small photo album for you.</p>
-
-    <img id="photo" class="bookPhoto">
-    <div class="photoCount" id="count"></div>
-
-    <div id="memoryGame">
-      <p><b>Memory Game 🧠</b></p>
-      <div class="grid" id="grid"></div>
-    </div>
-
-    <div class="controls">
-      <button onclick="prevPhoto()">← Back</button>
-      <button onclick="nextPhoto()">Next →</button>
-    </div>
-  </div>
-</div>
-
-<div class="confetti" id="confetti"></div>
-
-<div id="celebrationGIF">
-  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="celebration">
-</div>
-
-<div id="presentOverlay">
-  <div class="present" onclick="openParagraph()">
-    <div class="lid"></div>
-    <div class="base"></div>
-  </div>
-</div>
-
-<div id="letter">
-  <p>
- I grew up playing with you, fighting with you, going places with you, just growing up with you. And even now, I realise how blindly I believe everything you say. Sometimes you’ll say the most ridiculous things, and I’ll still believe you simply because it’s you.
-I genuinely thought snow was made of chemicals and that we’d die if we ate it because you told me so. I even fought with my friends over it. That’s how convinced I was. To me, you always knew everything.
-I have so many childhood memories with you. We played endlessly. We laughed endlessly. And honestly, you are the funniest person in my life. No one makes me laugh like you do.
-You’re genuinely one of the coolest people I know. And you’ve always been so cool to me that just being related to you feels like a flex. 
-Everything that I am not, you are. And somehow, even better. And I think that’s why I’ve always admired you. Why I’ve always looked up to you.
-You’re such a gentle yet bold person. You have so much love in you. You look after me, our family, and everyone around you without even realising how much you do. Everything you say and everything you do stays with me.
-Sometimes I don’t even see you as my older brother. Sometimes you feel like my younger brother. This incredibly adorable, playful person I just want to protect.
-I know that if you weren’t there, I would’ve fallen into so many holes. The reason I didn’t is because you were guiding me through them. You took the falls for me.
-Yes, we’ve fought. Like proper cats and dogs. But none of that ever mattered. Because at the end of the day, you are still my brother. And I love you more than I ever say out loud.
-I know you love me too. I know you still see me as your baby sister. And honestly, that’s all I could ever ask for.
-You’re turning 24 today, and time feels like it’s moving way too fast. But somehow, you’re still the same. Playful. Funny. Not too serious. Still telling white lies that your sister continues to believe.
-Nothing has changed.
-And I hope it never does.
-I love you so much.
-
+            <p style="font-size: 1.1rem; line-height: 1.6; text-align: left;">
+                I grew up playing with you, fighting with you, going places with you, just growing up with you. And even now, I realise how blindly I believe everything you say. Sometimes you’ll say the most ridiculous things, and I’ll still believe you simply because it’s you.<br><br>
+                I genuinely thought snow was made of chemicals and that we’d die if we ate it because you told me so. I even fought with my friends over it. That’s how convinced I was. To me, you always knew everything.<br><br>
+                I have so many childhood memories with you. We played endlessly. We laughed endlessly. And honestly, you are the funniest person in my life. No one makes me laugh like you do.<br><br>
+                You’re genuinely one of the coolest people I know. And you’ve always been so cool to me that just being related to you feels like a flex.<br><br>
+                Everything that I am not, you are. And somehow, even better. And I think that’s why I’ve always admired you. Why I’ve always looked up to you.<br><br>
+                You’re such a gentle yet bold person. You have so much love in you. You look after me, our family, and everyone around you without even realising how much you do. Everything you say and everything you do stays with me.<br><br>
+                Sometimes I don’t even see you as my older brother. Sometimes you feel like my younger brother. This incredibly adorable, playful person I just want to protect.<br><br>
+                I know that if you weren’t there, I would’ve fallen into so many holes. The reason I didn’t is because you were guiding me through them. You took the falls for me.<br><br>
+                Yes, we’ve fought. Like proper cats and dogs. But none of that ever mattered. Because at the end of the day, you are still my brother. And I love you more than I ever say out loud.<br><br>
+                I know you love me too. I know you still see me as your baby sister. And honestly, that’s all I could ever ask for.<br><br>
+                You’re turning 24 today, and time feels like it’s moving way too fast. But somehow, you’re still the same. Playful. Funny. Not too serious. Still telling white lies that your sister continues to believe.<br><br>
+                Nothing has changed. And I hope it never does.<br><br>
+                I love you so much.
             </p>
             <button onclick="window.location.href='cake.html'">Ready for the cake?</button>
         </div>
     </div>
 
 <script>
-    const photos = ["images/IMG_3138.jpeg","images/9455.jpeg","images/8946.jpeg","images/IMG_9181.jpeg","images/16229.jpeg","images/16125.jpeg","images/1611.jpeg","images/14849.jpeg","images/12658.jpeg","images/1000106712.jpeg","images/1000106709.jpeg","images/1000046709.jpeg","images/1000039572.jpeg","images/1000024923.jpeg"];
+    const photos = [
+        "images/IMG_3138.jpeg","images/9455.jpeg","images/8946.jpeg",
+        "images/IMG_9181.jpeg","images/16229.jpeg","images/16125.jpeg",
+        "images/1611.jpeg","images/14849.jpeg","images/12658.jpeg",
+        "images/1000106712.jpeg","images/1000106709.jpeg","images/1000046709.jpeg",
+        "images/1000039572.jpeg","images/1000024923.jpeg"
+    ];
     let currentIdx = 0;
 
     function enterSite() {
@@ -455,7 +220,6 @@ I love you so much.
         document.getElementById('display').src = photos[currentIdx];
         document.getElementById('counter').innerText = `${currentIdx + 1} / ${photos.length}`;
         
-        // Show Memory Game only on the last photo
         if(currentIdx === photos.length - 1) {
             document.getElementById('memoryGame').style.display = 'block';
             document.getElementById('header').innerText = "The Final Boss 🧠";
@@ -470,7 +234,7 @@ I love you so much.
         updatePhoto();
     }
 
-    // GAME LOGIC: 4 Pairs + 1 Heart = 9 Tiles
+    // GAME LOGIC
     const icons = ["🎂","🎂","🎈","🎈","🎉","🎉","✨","✨","❤️"];
     icons.sort(() => Math.random() - 0.5);
     let flipped = [], matches = 0;
@@ -479,14 +243,13 @@ I love you so much.
     icons.forEach(icon => {
         const tile = document.createElement('div');
         tile.className = 'tile';
-        tile.setAttribute('data-emoji', icon); // Needed for checkVictory
         tile.onclick = () => {
             if(tile.textContent || flipped.length === 2 || tile.classList.contains('matched')) return;
             tile.textContent = icon;
             
             if(icon === "❤️") {
                 tile.classList.add('matched');
-                checkVictory();
+                setTimeout(startCelebration, 500);
                 return;
             }
 
@@ -496,7 +259,7 @@ I love you so much.
                     flipped.forEach(t => t.classList.add('matched'));
                     matches++;
                     flipped = [];
-                    checkVictory();
+                    if(matches === 4) setTimeout(startCelebration, 500);
                 } else {
                     setTimeout(() => { flipped.forEach(t => t.textContent = ""); flipped = []; }, 600);
                 }
@@ -504,14 +267,6 @@ I love you so much.
         };
         grid.appendChild(tile);
     });
-
-    function checkVictory() {
-        // Logic: All 4 pairs matched AND the heart is found
-        const heartFound = document.querySelector('.tile.matched[data-emoji="❤️"]');
-        if(matches === 4 && heartFound) {
-            setTimeout(startCelebration, 600);
-        }
-    }
 
     function startCelebration() {
         document.getElementById('main-container').style.filter = "blur(10px)";
@@ -521,7 +276,6 @@ I love you so much.
         const gif = document.getElementById('party-gif');
         gif.style.display = 'block';
         
-        // After 3 seconds, hide GIF and show the rotating Present
         setTimeout(() => {
             gif.style.display = 'none';
             document.getElementById('final-gift').style.display = 'block';
@@ -529,7 +283,11 @@ I love you so much.
     }
 
     function openScroll() {
+        // Hide the gift and the background photo album completely
         document.getElementById('final-gift').style.display = 'none';
+        document.getElementById('main-container').style.display = 'none';
+        
+        // Show the actual long message
         document.getElementById('scroll-message').style.display = 'block';
     }
 </script>
