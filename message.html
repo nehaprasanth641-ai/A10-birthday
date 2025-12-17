@@ -1,288 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>For A10 💙</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Memory Game 🎮</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: black;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #f8e8ff, #e8f0ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
 
-.box {
-  background: #111;
-  padding: 30px;
-  border-radius: 22px;
-  max-width: 380px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-  position: relative;
-  z-index: 1;
-}
+    h2 {
+      margin-top: 20px;
+      color: #333;
+    }
 
-.bookPhoto {
-  width: 100%;
-  border-radius: 18px;
-  margin-top: 15px;
-}
+    #game {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      grid-gap: 15px;
+      margin-top: 30px;
+    }
 
-.photoCount {
-  margin-top: 8px;
-  font-weight: bold;
-}
+    .tile {
+      width: 100px;
+      height: 100px;
+      background: #cdb4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      user-select: none;
+    }
 
-.controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-}
+    .tile:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(205,180,255,0.7);
+    }
 
-.controls button {
-  padding: 10px 18px;
-  border-radius: 22px;
-  border: none;
-  background: #6c63ff;
-  color: white;
-}
+    .tile.correct {
+      background: #6ee57e;
+      color: white;
+    }
 
-#memoryGame {
-  display: none;
-  margin-top: 20px;
-}
+    #confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 10px;
-}
+    #celebration {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+    }
 
-.card {
-  height: 80px;
-  background: #222;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  cursor: pointer;
-}
+    #celebration img {
+      width: 200px;
+      height: 200px;
+    }
 
-/* Blur background when gift active */
-body.gift-active .box {
-  filter: blur(6px);
-  pointer-events: none;
-}
+    #claim-text {
+      margin-top: 15px;
+      font-size: 20px;
+      background: #ffd1dc;
+      padding: 10px 20px;
+      border-radius: 20px;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
 
-/* 🎁 Gift Overlay */
-#giftOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 9999;
-}
-
-/* Gift Box */
-.gift {
-  width: 120px;
-  height: 120px;
-  position: relative;
-  cursor: pointer;
-  animation: spin 4s linear infinite;
-}
-
-.lid {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 45%;
-  background: crimson;
-  border-radius: 14px 14px 0 0;
-  transition: 0.8s;
-  z-index: 2;
-}
-
-.base {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 70%;
-  background: red;
-  border-radius: 0 0 14px 14px;
-  box-shadow: 0 0 25px gold;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Paragraph Reveal */
-#letter {
-  display: none;
-  background: #fdf6e3;
-  color: #222;
-  padding: 30px;
-  border-radius: 18px;
-  max-width: 600px;
-  text-align: center;
-  font-family: "Georgia", serif;
-}
-
-#letter button {
-  margin-top: 20px;
-  padding: 12px 22px;
-  border-radius: 20px;
-  border: none;
-  background: #cdb4ff;
-}
-</style>
+    #claim-text:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255,200,200,0.7);
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="box">
-  <h1>Hi 💙</h1>
-  <p>Scroll through the memories.</p>
+<h2>Memory Game 🎮</h2>
+<div id="game"></div>
 
-  <img id="photo" class="bookPhoto">
-  <div class="photoCount" id="count"></div>
+<div id="confetti"></div>
 
-  <div id="memoryGame">
-    <p><b>Memory Game 🧠</b></p>
-    <div class="grid" id="grid"></div>
-  </div>
-
-  <div class="controls">
-    <button onclick="prevPhoto()">← Back</button>
-    <button onclick="nextPhoto()">Next →</button>
-  </div>
-</div>
-
-<!-- 🎁 GIFT -->
-<div id="giftOverlay">
-  <div class="gift" onclick="openGift()">
-    <div class="lid"></div>
-    <div class="base"></div>
-  </div>
-
-  <div id="letter">
-    <p>
-      Ever since we were little, you’ve always been kind of stuck to me...
-      <br><br>
-      I love you so much.
-    </p>
-
-    <button onclick="alert('Cake comes next 🎂')">
-      Are you ready for the cake?
-    </button>
-  </div>
+<div id="celebration">
+  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="celebration gif">
+  <div id="claim-text">Tap to claim 🎁</div>
 </div>
 
 <script>
-const photos = [
-  "images/IMG_3138.jpeg",
-  "images/9455.jpeg",
-  "images/8946.jpeg",
-  "images/27029.jpeg",
-  "images/16229.jpeg",
-  "images/16125.jpeg",
-  "images/1611.jpeg",
-  "images/14849.jpeg",
-  "images/12658.jpeg",
-  "images/1000106712.jpeg",
-  "images/1000106709.jpeg",
-  "images/1000046709.jpeg",
-  "images/1000039572.jpeg",
-  "images/1000024923.jpeg"
-];
+  // Birthday-themed memory game symbols
+  const symbols = ['🎂','🎁','🎉','🕯️','🍰','🎈','🍭','🍬'];
+  const tilesArray = [...symbols, ...symbols];
+  let firstTile = null;
+  let secondTile = null;
+  let lockBoard = false;
+  let matchedCount = 0;
 
-let index = 0;
-const photo = document.getElementById("photo");
-const count = document.getElementById("count");
+  const game = document.getElementById('game');
 
-function updatePage() {
-  photo.src = photos[index];
-  count.textContent = `${index + 1} / ${photos.length}`;
-  if (index === 13) startMemory();
-}
+  // Shuffle
+  function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
 
-function nextPhoto() {
-  index = Math.min(index + 1, photos.length - 1);
-  updatePage();
-}
-
-function prevPhoto() {
-  index = Math.max(index - 1, 0);
-  updatePage();
-}
-
-/* MEMORY GAME */
-const emojis = ["💙","🎂","✨","🎁","🫶","🌙"];
-let cards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
-let first = null, lock = false, matched = 0;
-
-function startMemory() {
-  document.getElementById("memoryGame").style.display = "block";
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  cards.forEach(e => {
-    const c = document.createElement("div");
-    c.className = "card";
-    c.onclick = () => flip(c, e);
-    grid.appendChild(c);
+  // Create tiles
+  shuffle(tilesArray).forEach(symbol => {
+    const tile = document.createElement('div');
+    tile.classList.add('tile');
+    tile.dataset.symbol = symbol;
+    tile.textContent = '';
+    tile.addEventListener('click', flipTile);
+    game.appendChild(tile);
   });
-}
 
-function flip(card, emoji) {
-  if (lock || card.textContent) return;
-  card.textContent = emoji;
-  if (!first) {
-    first = card;
-  } else {
-    if (first.textContent === emoji) {
-      matched++;
-      first = null;
-      if (matched === emojis.length) showGift();
+  function flipTile() {
+    if (lockBoard || this.classList.contains('correct') || this === firstTile) return;
+
+    this.textContent = this.dataset.symbol;
+    this.classList.add('flip');
+
+    if (!firstTile) {
+      firstTile = this;
+      return;
+    }
+
+    secondTile = this;
+    checkMatch();
+  }
+
+  function checkMatch() {
+    if (firstTile.dataset.symbol === secondTile.dataset.symbol) {
+      firstTile.classList.add('correct');
+      secondTile.classList.add('correct');
+      matchedCount += 2;
+      resetTiles();
+
+      if (matchedCount === tilesArray.length) {
+        showCelebration();
+      }
     } else {
-      lock = true;
+      lockBoard = true;
       setTimeout(() => {
-        first.textContent = "";
-        card.textContent = "";
-        first = null;
-        lock = false;
-      }, 600);
+        firstTile.textContent = '';
+        secondTile.textContent = '';
+        resetTiles();
+      }, 800);
     }
   }
-}
 
-function showGift() {
-  document.body.classList.add("gift-active");
-  document.getElementById("giftOverlay").style.display = "flex";
-}
+  function resetTiles() {
+    [firstTile, secondTile] = [null, null];
+    lockBoard = false;
+  }
 
-function openGift() {
-  document.querySelector(".lid").style.transform = "translateY(-80px) rotateX(60deg)";
-  document.querySelector(".base").style.transform = "translateY(40px)";
-  setTimeout(() => {
-    document.querySelector(".gift").style.display = "none";
-    document.getElementById("letter").style.display = "block";
-  }, 900);
-}
+  // Celebration and confetti
+  function showCelebration() {
+    startConfetti();
+    setTimeout(() => {
+      stopConfetti();
+      document.getElementById('celebration').style.display = 'flex';
+      game.style.display = 'none';
+    }, 2000);
+  }
 
-updatePage();
+  // Confetti logic
+  let confettiInterval;
+  function startConfetti() {
+    const confettiContainer = document.getElementById('confetti');
+    confettiInterval = setInterval(() => {
+      const confetto = document.createElement('div');
+      confetto.textContent = '🎉';
+      confetto.style.position = 'absolute';
+      confetto.style.fontSize = Math.random() * 30 + 20 + 'px';
+      confetto.style.top = '0';
+      confetto.style.left = Math.random() * window.innerWidth + 'px';
+      confetto.style.opacity = Math.random();
+      confetto.style.transform = `rotate(${Math.random()*360}deg)`;
+      confettiContainer.appendChild(confetto);
+
+      // Animate
+      const fall = setInterval(() => {
+        const top = parseFloat(confetto.style.top);
+        if (top > window.innerHeight) {
+          confetto.remove();
+          clearInterval(fall);
+        } else {
+          confetto.style.top = top + 5 + 'px';
+        }
+      }, 20);
+    }, 100);
+  }
+
+  function stopConfetti() {
+    clearInterval(confettiInterval);
+    document.getElementById('confetti').innerHTML = '';
+  }
+
 </script>
 
 </body>
