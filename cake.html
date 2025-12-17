@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Wish — A10</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* STARRY BACKGROUND */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
+            z-index: 0;
+            animation: moveStars 100s linear infinite;
+        }
+
+        @keyframes moveStars {
+            from { background-position: 0 0; }
+            to { background-position: 10000px 5000px; }
+        }
+
+        #instruction {
+            font-size: 1.4rem;
+            margin-bottom: 60px;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            z-index: 2;
+            padding: 0 20px;
+            transition: opacity 0.5s;
+        }
+
+        /* CHOCOLATE CAKE */
+        .cake-container { 
+            position: relative; 
+            z-index: 2; 
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        /* Cake Body - Chocolate Layers */
+        .cake { 
+            width: 180px; 
+            height: 100px; 
+            background: #3d2b1f; /* Dark Chocolate */
+            border-radius: 15px 15px 0 0; 
+            position: relative; 
+            box-shadow: inset 0 -10px 0 #2a1d15;
+        }
+
+        /* Chocolate Frosting Drip */
+        .cake::after { 
+            content: ''; 
+            position: absolute; 
+            width: 180px; 
+            height: 25px; 
+            background: #2a1d15; /* Darker Chocolate Drip */
+            top: 20px; 
+            left: 0;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Creamy Middle Layer */
+        .cake::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 10px;
+            background: #f5f5dc; /* Vanilla cream layer */
+            top: 55px;
+            left: 0;
+            z-index: 1;
+        }
+
+        .candle {
+            width: 12px; 
+            height: 50px; 
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #6c63ff 5px, #6c63ff 10px);
+            position: absolute; 
+            top: -50px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .flame {
+            width: 16px; 
+            height: 26px; 
+            background: #ff9800;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute; 
+            top: -30px; 
+            left: -2px;
+            box-shadow: 0 0 20px #ff9800, 0 0 40px #ff5722;
+            animation: flicker 0.1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
+            100% { transform: scale(1.1) rotate(1deg); opacity: 1; }
+        }
+
+        /* SMOKE ANIMATION */
+        .smoke {
+            position: absolute; 
+            width: 4px; 
+            height: 4px; 
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            top: -30px; 
+            left: 4px; 
+            display: none;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-80px) scale(3); opacity: 0; }
+        }
+
+        #surprise-msg {
+            display: none;
+            margin-top: 50px;
+            font-size: 1.4rem;
+            text-align: center;
+            z-index: 2;
+            animation: fadeIn 2s ease-in forwards;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+
+    <h2 id="instruction">Tap and hold to blow the candles!</h2>
+
+    <div class="cake-container" id="cakeContainer" 
+         onmousedown="startBlow()" onmouseup="stopBlow()" 
+         ontouchstart="startBlow()" ontouchend="stopBlow()">
+        <div class="cake">
+            <div class="candle">
+                <div class="flame" id="flame"></div>
+                <div class="smoke" id="smoke"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="surprise-msg">
+        <h3>✨ Happy Birthday A10! ✨</h3>
+        <p>Your wish is on its way...</p>
+    </div>
+
+    <script>
+        let blowTimer;
+        const flame = document.getElementById('flame');
+        const smoke = document.getElementById('smoke');
+        const instruction = document.getElementById('instruction');
+        const surprise = document.getElementById('surprise-msg');
+
+        function startBlow() {
+            // Must hold for 1.5 seconds to "blow out"
+            blowTimer = setTimeout(() => {
+                flame.style.display = 'none';
+                
+                // Trigger smoke animation
+                smoke.style.display = 'block';
+                smoke.style.animation = 'rise 2s forwards';
+                
+                instruction.style.opacity = '0';
+                setTimeout(() => {
+                    instruction.innerText = "Make a wish! 🎂";
+                    instruction.style.opacity = '1';
+                    surprise.style.display = 'block';
+                }, 500);
+            }, 1500);
+        }
+
+        function stopBlow() {
+            clearTimeout(blowTimer);
+        }
+    </script>
+</body>
+</html>
