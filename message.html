@@ -1,3 +1,12 @@
+<think>
+First, the user wants a 3x3 grid, which is 9 tiles.
+
+
+## Interpreting user request  
+- The user requested a 3x3 grid, which means 9 tiles in total.  
+- They specified "4 pairs and one heart," accounting for 8 tiles from the pairs and 1 heart tile, fitting the 9-tile grid.  
+- Emojis should reflect a festive birthday theme to match the occasion.
+</think>```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -239,8 +248,7 @@ body {
 
 <div id="letter">
   <p>
-    Ever since we were little, you’ve always been kind of stuck to me...<br><br>
-    I love you so much.
+    "Brothers aren't just family; they're the ones who know your secrets, share your laughs, and stand by you through every storm. Happy Birthday, A10! You've been my rock, my partner in crime, and my favorite person to annoy. Here's to more adventures, more memories, and a lifetime of brotherhood. I love you more than all the stars in the sky. 💙"
   </p>
   <button onclick="window.location.href='cake.html'">Are you ready for the cake?</button>
 </div>
@@ -276,8 +284,7 @@ function prevPhoto(){
 }
 
 // --- MEMORY GAME ---
-const emojis = ["💙","🎂","✨"];
-let tiles = [...emojis, ...emojis, "❤️"]; // 3x3 total 9 tiles
+let tiles = ["🎂","🎂","🎈","🎈","🎉","🎉","✨","✨","❤️"]; // 4 pairs + 1 heart
 tiles.sort(()=>Math.random()-0.5);
 
 let first=null, lock=false, matched=0;
@@ -297,6 +304,11 @@ function startMemory(){
 function flip(card,symbol){
   if(lock || card.textContent) return;
   card.textContent=symbol;
+  if(symbol === "❤️"){
+    // Special: clicking the heart triggers the win
+    triggerGIFConfetti();
+    return;
+  }
   if(!first){
     first=card;
   } else {
@@ -305,7 +317,6 @@ function flip(card,symbol){
       card.classList.add("correct");
       first=null;
       matched++;
-      if(matched === emojis.length) triggerGIFConfetti();
     } else {
       lock=true;
       setTimeout(()=>{
@@ -354,3 +365,4 @@ updatePage();
 </script>
 </body>
 </html>
+```
