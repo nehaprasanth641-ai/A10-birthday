@@ -17,7 +17,13 @@ body {
   justify-content: center;
   flex-direction: column;
   overflow-x: hidden;
-  transition: filter 0.5s ease;
+}
+
+#content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .box {
@@ -99,7 +105,7 @@ body {
   color: white;
 }
 
-/* Confetti placeholder: you can use a library like canvas-confetti later */
+/* Confetti placeholder */
 .confetti {
   position: fixed;
   inset: 0;
@@ -225,21 +231,23 @@ body {
 
 <body>
 
-<div class="box">
-  <h1>Hi 💙</h1>
-  <p>Scroll through the memories.</p>
+<div id="content">
+  <div class="box">
+    <h1>Hi 💙</h1>
+    <p>Scroll through the memories.</p>
 
-  <img id="photo" class="bookPhoto">
-  <div class="photoCount" id="count"></div>
+    <img id="photo" class="bookPhoto">
+    <div class="photoCount" id="count"></div>
 
-  <div id="memoryGame">
-    <p><b>Memory Game 🧠</b></p>
-    <div class="grid" id="grid"></div>
-  </div>
+    <div id="memoryGame">
+      <p><b>Memory Game 🧠</b></p>
+      <div class="grid" id="grid"></div>
+    </div>
 
-  <div class="controls">
-    <button onclick="prevPhoto()">← Back</button>
-    <button onclick="nextPhoto()">Next →</button>
+    <div class="controls">
+      <button onclick="prevPhoto()">← Back</button>
+      <button onclick="nextPhoto()">Next →</button>
+    </div>
   </div>
 </div>
 
@@ -273,20 +281,11 @@ body {
 
 <script>
 const photos = [
-  "images/IMG_3138.jpeg",
-  "images/9455.jpeg",
-  "images/8946.jpeg",
-  "images/27029.jpeg",
-  "images/16229.jpeg",
-  "images/16125.jpeg",
-  "images/1611.jpeg",
-  "images/14849.jpeg",
-  "images/12658.jpeg",
-  "images/1000106712.jpeg",
-  "images/1000106709.jpeg",
-  "images/1000046709.jpeg",
-  "images/1000039572.jpeg",
-  "images/1000024923.jpeg"
+  "images/IMG_3138.jpeg","images/9455.jpeg","images/8946.jpeg",
+  "images/27029.jpeg","images/16229.jpeg","images/16125.jpeg",
+  "images/1611.jpeg","images/14849.jpeg","images/12658.jpeg",
+  "images/1000106712.jpeg","images/1000106709.jpeg","images/1000046709.jpeg",
+  "images/1000039572.jpeg","images/1000024923.jpeg"
 ];
 
 let index = 0;
@@ -327,7 +326,6 @@ function startMemory(){
     card.onclick=()=>flip(card,symbol);
     grid.appendChild(card);
   });
-  // optional: show confetti when memory game appears
 }
 
 function flip(card,symbol){
@@ -360,33 +358,28 @@ function flip(card,symbol){
 const celebrationGIF = document.getElementById("celebrationGIF");
 function showCelebrationGIF(){
   celebrationGIF.style.display="block";
-  setTimeout(()=>{
-    celebrationGIF.style.transform="translate(-50%, -50%) scale(1)";
-  },50);
-  // show present after GIF slides in
-  setTimeout(showPresent,2200);
+  setTimeout(()=>{ celebrationGIF.style.transform="translate(-50%, -50%) scale(1)"; },50);
+  setTimeout(showPresent,2200); // Present appears after GIF
 }
 
 // ---------------- PRESENT ----------------
 const presentOverlay = document.getElementById("presentOverlay");
 const present = document.querySelector(".present");
 const tapButton = document.getElementById("tapToClaim");
+const contentDiv = document.getElementById("content");
 
 function showPresent(){
   presentOverlay.style.display="flex";
-  // animate from bottom to center
+  // blur background when present appears
+  contentDiv.style.filter="blur(4px)";
   present.style.transform="translateY(0)";
-  // show tap to claim button after short delay
   setTimeout(()=>{ tapButton.style.display="block"; },800);
 }
 
 function claimPresent(){
   document.querySelector(".lid").style.transform="translateY(-80px) rotateX(60deg)";
   document.querySelector(".base").style.transform="translateY(40px)";
-  // hide tap button
   tapButton.style.display="none";
-  // blur background
-  document.body.style.filter="blur(4px)";
   setTimeout(()=>{
     presentOverlay.style.display="none";
     document.getElementById("letter").style.display="block";
