@@ -1,165 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Navneeth — Level 24</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Navneeth — Level 24</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: black;
+            color: white;
+            overflow-x: hidden;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #f8e8ff, #e8f0ff);
-      overflow: hidden;
-    }
+        /* --- STAGE 1: ENTRANCE CARD --- */
+        #entrance-card {
+            background: white;
+            padding: 40px;
+            border-radius: 22px;
+            text-align: center;
+            box-shadow: 0 25px 40px rgba(255,255,255,0.1);
+            color: #333;
+            z-index: 10;
+        }
 
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.08);
-      z-index: 2;
-      position: relative;
-    }
+        button {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 14px;
+            background: #cdb4ff;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
 
-    h1 { margin: 0; font-size: 32px; }
-    p { margin: 10px 0 20px; color: #666; }
+        /* --- STAGE 2: PHOTO BOOTH & GAME --- */
+        #main-content { display: none; width: 90%; max-width: 400px; text-align: center; }
+        
+        .photo-frame {
+            background: #111;
+            padding: 20px;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-    button {
-      padding: 12px 22px;
-      border: none;
-      border-radius: 14px;
-      background: #cdb4ff;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+        .bookPhoto {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 15px;
+        }
 
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 12px rgba(205,180,255,0.7);
-    }
+        #memoryGame {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
 
-    /* GIFT BOX */
-    #gift-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-    .gift-box {
-      width: 150px;
-      height: 150px;
-      position: relative;
-      cursor: pointer;
-      perspective: 800px;
-    }
+        .card-tile {
+            height: 70px;
+            background: #222;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
 
-    /* Lid of gift */
-    .lid {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: 50%;
-      background: #d42c2c;
-      border-radius: 15px 15px 0 0;
-      transition: transform 0.6s ease;
-      z-index: 2;
-    }
+        .card-tile.correct { background: #6ee57e; }
 
-    /* Ribbon horizontal */
-    .ribbon-h {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 10px;
-      background: gold;
-      z-index: 3;
-      transform: translateY(-50%);
-    }
+        /* --- STAGE 3: OVERLAYS (GIF, PRESENT, SCROLL) --- */
+        #overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    /* Ribbon vertical */
-    .ribbon-v {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 10px;
-      height: 100%;
-      background: gold;
-      z-index: 3;
-      transform: translateX(-50%);
-    }
+        #celebrationGIF { width: 280px; transform: scale(0); transition: 0.8s; }
 
-    .box-body {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      background: #ff4d4d;
-      border-radius: 0 0 15px 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.5rem;
-      color: white;
-      box-shadow: 0 0 20px gold;
-      animation: glow 1.5s infinite alternate;
-    }
+        .present {
+            width: 120px;
+            height: 120px;
+            display: none;
+            position: relative;
+            cursor: pointer;
+            animation: rotateGlow 3s infinite linear;
+        }
 
-    @keyframes glow {
-      from { box-shadow: 0 0 20px gold; }
-      to { box-shadow: 0 0 40px yellow; }
-    }
-  </style>
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); box-shadow: 0 0 15px gold; }
+            100% { transform: rotate(360deg); box-shadow: 0 0 15px gold; }
+        }
+
+        .lid { width: 100%; height: 30%; background: #d42c2c; border-radius: 8px 8px 0 0; }
+        .base { width: 100%; height: 70%; background: #ff4d4d; border-radius: 0 0 8px 8px; }
+
+        #scroll-msg {
+            display: none;
+            background: #fdf6e3;
+            color: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 80%;
+            transform: scaleY(0);
+            transform-origin: top;
+            animation: unroll 1.5s forwards;
+            font-family: 'Georgia', serif;
+            text-align: center;
+        }
+
+        @keyframes unroll { to { transform: scaleY(1); } }
+    </style>
 </head>
-
 <body>
 
-<!-- 🎁 GIFT -->
-<div id="gift-overlay">
-  <div class="gift-box" onclick="openGift()">
-    <div class="lid"></div>
-    <div class="ribbon-h"></div>
-    <div class="ribbon-v"></div>
-    <div class="box-body">🎁</div>
-  </div>
-</div>
+    <div id="entrance-card">
+        <h1>LEVEL 24 🎮</h1>
+        <p>Happy Birthday A10!</p>
+        <button onclick="startExperience()">Enter</button>
+    </div>
 
-<!-- CARD -->
-<div class="card">
-  <h1>LEVEL 24 🎮</h1>
-  <p>Happy Birthday A10 super cool wowoowow</p>
-  <button onclick="openGift()">Enter</button>
-</div>
+    <div id="main-content">
+        <div class="photo-frame">
+            <h2 id="title-text">Memories 💙</h2>
+            <img id="photo-display" class="bookPhoto">
+            <p id="counter">1 / 14</p>
+            <div id="memoryGame">
+                <p><b>Unlock the Heart ❤️</b></p>
+                <div class="grid" id="grid"></div>
+            </div>
+            <div style="display:flex; justify-content: space-between; margin-top:15px;">
+                <button onclick="prev()">Back</button>
+                <button onclick="next()">Next</button>
+            </div>
+        </div>
+    </div>
 
-<audio id="clickSound">
-  <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3">
-</audio>
+    <div id="overlay">
+        <img id="celebrationGIF" src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">
+        <div class="present" id="presentBox" onclick="showScroll()">
+            <div class="lid"></div>
+            <div class="base"></div>
+        </div>
+        <div id="scroll-msg">
+            <p>"Brothers aren't just family; they're the ones who know your secrets and share your laughs. Happy Birthday, A10! 💙"</p>
+            <button onclick="window.location.href='cake.html'">Ready for Cake?</button>
+        </div>
+    </div>
 
 <script>
-function openGift() {
-  document.getElementById("clickSound").play();
+    const photos = ["images/IMG_3138.jpeg","images/9455.jpeg","images/8946.jpeg","images/27029.jpeg","images/16229.jpeg","images/16125.jpeg","images/1611.jpeg","images/14849.jpeg","images/12658.jpeg","images/1000106712.jpeg","images/1000106709.jpeg","images/1000046709.jpeg","images/1000039572.jpeg","images/1000024923.jpeg"];
+    let idx = 0;
 
-  // Lid animation
-  document.querySelector(".lid").style.transform =
-    "translateY(-100%) rotateX(45deg)";
+    function startExperience() {
+        document.getElementById('entrance-card').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        updateUI();
+    }
 
-  // Optional: fade out gift overlay after opening
-  setTimeout(() => {
-    document.getElementById("gift-overlay").style.display = "none";
-    window.location.href = "message.html"; // Go to next page
-  }, 900);
-}
+    function updateUI() {
+        document.getElementById('photo-display').src = photos[idx];
+        document.getElementById('counter').innerText = `${idx + 1} / ${photos.length}`;
+        if(idx === photos.length - 1) {
+            document.getElementById('memoryGame').style.display = 'block';
+            document.getElementById('title-text').innerText = "The Final Boss 🧠";
+        }
+    }
+
+    function next() { if(idx < photos.length-1) { idx++; updateUI(); } }
+    function prev() { if(idx > 0) { idx--; updateUI(); } }
+
+    // GAME LOGIC
+    const tiles = ["🎂","🎂","🎈","🎈","🎉","🎉","✨","✨","❤️"];
+    tiles.sort(() => Math.random() - 0.5);
+    let first = null, lock = false, pairs = 0;
+
+    const grid = document.getElementById('grid');
+    tiles.forEach(emoji => {
+        const t = document.createElement('div');
+        t.className = 'card-tile';
+        t.onclick = () => {
+            if(lock || t.textContent || t.classList.contains('correct')) return;
+            t.textContent = emoji;
+            if(emoji === "❤️") { t.classList.add('correct'); checkWin(); return; }
+            if(!first) { first = t; return; }
+            if(first.textContent === emoji) {
+                first.classList.add('correct'); t.classList.add('correct');
+                pairs++; first = null; checkWin();
+            } else {
+                lock = true;
+                setTimeout(() => { first.textContent = ""; t.textContent = ""; first = null; lock = false; }, 600);
+            }
+        };
+        grid.appendChild(t);
+    });
+
+    function checkWin() {
+        const heart = document.querySelector('.card-tile.correct[textContent="❤️"]');
+        if(pairs === 4) {
+            document.getElementById('overlay').style.display = 'flex';
+            setTimeout(() => { document.getElementById('celebrationGIF').style.transform = 'scale(1)'; }, 100);
+            setTimeout(() => {
+                document.getElementById('celebrationGIF').style.display = 'none';
+                document.getElementById('presentBox').style.display = 'block';
+            }, 3000);
+        }
+    }
+
+    function showScroll() {
+        document.getElementById('presentBox').style.display = 'none';
+        document.getElementById('scroll-msg').style.display = 'block';
+    }
 </script>
-
 </body>
 </html>
